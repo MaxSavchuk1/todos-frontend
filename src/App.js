@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input, Field, Label, Description } from "@headlessui/react";
-import clsx from "clsx";
+import { getTodos } from "./api";
 
-import { getTodos, createTodo } from "./api";
+import TodoDialog from "./components/TodoDialog";
+import TodosContainer from "./components/TodosContainer";
 
 function App() {
   const [todos, setTodos] = useState([]);
-  const [todo, setTodo] = useState("");
 
   const fetchTodos = async () => {
-    const res = await getTodos();
-    setTodos(res.data);
-  };
-
-  const clickHandler = async () => {
-    await createTodo({ body: todo });
-    await fetchTodos();
-    setTodo("");
+    try {
+      const res = await getTodos();
+      setTodos(res.data);
+    } catch (e) {
+      console.log("error", e);
+    }
   };
 
   useEffect(() => {
@@ -24,13 +21,11 @@ function App() {
   }, []);
 
   return (
-    <div>
-      {todos.map((todo) => (
-        <div key={todo.id}>{todo.body}</div>
-      ))}
-
-      <Button onClick={clickHandler}>Add</Button>
-    </div>
+    <>
+      <h1 className="text-3xl font-bold text-blue-500 mb-2">Jeera 🤪</h1>
+      <TodosContainer todos={todos} />
+      <TodoDialog />
+    </>
   );
 }
 
