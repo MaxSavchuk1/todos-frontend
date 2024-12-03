@@ -3,9 +3,9 @@ import { useEffect, useMemo, useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { pick } from "lodash";
 
-import { STATUSES } from "../constants";
-import { Select, Button, Dialog } from "./ui/index";
-import useTodos from "../hooks/useTodos";
+import { STATUSES } from "../../constants";
+import { Select, Button, Dialog } from "../ui/index";
+import useTodos from "../../hooks/useTodos";
 
 const initialFormValues = {
   title: "",
@@ -60,14 +60,14 @@ export default function TodoDialog() {
                   name="title"
                   type="text"
                   placeholder="Title"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 sm:text-sm/6 font-semibold"
+                  className="text-input font-semibold"
                 />
                 <Field
                   name="body"
                   component="textarea"
                   rows={3}
                   placeholder="Content"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 sm:text-sm/6"
+                  className="text-input"
                 />
               </>
             )}

@@ -1,21 +1,20 @@
 import { useMemo } from "react";
-import { STATUSES } from "../constants";
-import TodoCard from "./TodoCard";
-import useTodos from "../hooks/useTodos";
+import styles from "./styles.module.css";
+import { STATUSES } from "../../constants";
+import TodoCard from "../TodoCard";
+import useTodos from "../../hooks/useTodos";
 
 export default function TodosContainer({ todos }) {
+  const { setShowModal } = useTodos();
+
   const groupedTodos = useMemo(() => {
     return Object.groupBy(todos, (todo) => todo.status);
   }, [todos]);
-  const { setShowModal } = useTodos();
 
   return (
     <div className="flex gap-3 h-full">
       {STATUSES.map((status) => (
-        <div
-          key={status}
-          className="flex flex-col w-64 shrink-0 h-full border border-black p-1 gap-2"
-        >
+        <div key={status} className={styles.todosColumn}>
           <h2 className="capitalize mx-auto">{status}</h2>
 
           {groupedTodos[status] && (
@@ -28,7 +27,7 @@ export default function TodosContainer({ todos }) {
 
           {status === "new" && (
             <button
-              className="flex flex-col items-center justify-center gap-4 h-16 w-full border border-black rounded-md cursor-pointer bg-slate-100 text-xl"
+              className={styles.addButton}
               onClick={() => setShowModal(true)}
             >
               +

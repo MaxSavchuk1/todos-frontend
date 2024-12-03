@@ -1,24 +1,20 @@
 import React from "react";
 import { useFormikContext, Field } from "formik";
+import styles from "./styles.module.css";
+import clsx from "clsx";
 
-const Select = ({
-  name,
-  onChange,
-  optionValues = [],
-  placeholder = "",
-  flex = true,
-}) => {
+const Select = ({ name, onChange, optionValues = [], placeholder = "" }) => {
   const { values, setFieldValue } = useFormikContext();
   const defaultOnChange = (e) => {
     setFieldValue(name, e.target.value);
   };
 
   return (
-    <div className={["relative", flex ? "flex-1" : ""].join(" ")}>
+    <div className="flex-1">
       <Field
         as="select"
         name={name}
-        className={[!values[name] ? "text-gray" : "", "w-full"].join(" ")}
+        className={clsx(!values[name] && "text-gray", styles.select)}
         onChange={onChange || defaultOnChange}
       >
         <option disabled hidden value="">
