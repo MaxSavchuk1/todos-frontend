@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-
 import { Formik, Form, Field } from "formik";
 import { pick } from "lodash";
+import { enqueueSnackbar } from "notistack";
 
 import { STATUSES } from "../../constants";
 import { sleep } from "../../helpers";
@@ -39,12 +39,17 @@ export default function TodoDialog() {
     try {
       if (!currentId) return;
 
-      const res = await getTodoById(currentId);
-      setCurrentTodo(res.data);
+      const response = await getTodoById(currentId);
+      setCurrentTodo(response);
     } catch (e) {
       console.error("error", e);
     }
   }, [currentId]);
+
+  const successHandler = (message = "Success!") => {
+    enqueueSnackbar(message, { variant: "success" });
+    fetchTodos();
+  };
 
   const handleSubmit = async (values) => {
     try {
@@ -60,7 +65,7 @@ export default function TodoDialog() {
       if (currentId) {
         await fetchTodo();
       } else {
-        fetchTodos();
+        successHandler();
         close();
       }
     } catch (e) {
@@ -70,9 +75,11 @@ export default function TodoDialog() {
 
   const handleDelete = async () => {
     try {
-      await deleteTodo(currentId);
-      fetchTodos();
-      close();
+      if (window.confirm("Are you shure?")) {
+        await deleteTodo(currentId);
+        successHandler("Todo was deleted");
+        close();
+      }
     } catch (e) {
       console.error("error", e);
     }

@@ -3,15 +3,17 @@
 }
 
 .panelContainer {
-  @apply flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0;
+  @apply flex min-h-full justify-center text-center items-center p-0;
 }
 
 .panel {
-  @apply relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg sm:p-6 data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95;
+  @apply relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all my-8 w-full max-w-lg p-6;
+  @apply data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in;
+  @apply data-[closed]:translate-y-0 data-[closed]:opacity-0 data-[closed]:scale-95;
 }
 
 .closeButtonContainer {
-  @apply absolute right-0 top-0 hidden pr-4 pt-4 sm:block;
+  @apply absolute right-0 top-0 pr-4 pt-4 block;
 }
 
 .closeButton {

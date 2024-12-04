@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
+import { SnackbarProvider } from "notistack";
+
 import App from "./App";
 import { store } from "./store";
 import { fetchTodos } from "./store/todos.slice";
@@ -13,7 +15,9 @@ store.dispatch(fetchTodos());
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <SnackbarProvider>
+        <App />
+      </SnackbarProvider>
     </Provider>
   </React.StrictMode>
 );

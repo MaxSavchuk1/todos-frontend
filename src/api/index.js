@@ -1,4 +1,5 @@
 import axios from "axios";
+import { enqueueSnackbar } from "notistack";
 
 const axiosOptions = {
   baseURL: "http://localhost:4000/todos",
@@ -6,7 +7,22 @@ const axiosOptions = {
 
 const apiInstance = axios.create(axiosOptions);
 
-/** */
+apiInstance.interceptors.response.use(
+  (response) => {
+    return Promise.resolve(response.data);
+  },
+  (err) => {
+    enqueueSnackbar(
+      err?.response?.data?.message || "Something went wrong. try again!",
+      {
+        variant: "error",
+      }
+    );
+    return Promise.reject(err);
+  }
+);
+
+/********* TODO: split code ********/
 
 export const getTodos = () => apiInstance.get("/");
 

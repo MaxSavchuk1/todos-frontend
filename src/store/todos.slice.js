@@ -11,7 +11,7 @@ const initialState = {
 export const fetchTodos = createAsyncThunk("@@todos/fetchTodos", async () => {
   try {
     const response = await getTodos();
-    return response?.data;
+    return response;
   } catch (e) {
     console.error("error", e);
   }

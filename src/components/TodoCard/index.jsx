@@ -1,9 +1,9 @@
 import { useMemo } from "react";
+import clsx from "clsx";
 import useTodos from "../../hooks/useTodos";
 import styles from "./style.module.css";
-import clsx from "clsx";
 
-export default function TodoCard({ todo, minified = false }) {
+export default function TodoCard({ todo, minified = false, handleDragTodo }) {
   const { setShowModal, pushToIdsStack } = useTodos();
 
   const createdTime = useMemo(
@@ -16,10 +16,17 @@ export default function TodoCard({ todo, minified = false }) {
     setShowModal(true);
   };
 
+  const onDragStart = (e) => {
+    handleDragTodo(e.target.id);
+  };
+
   return (
     <div
+      id={todo.status + "_" + todo.id}
       className={clsx(styles.cardContainer, !minified && "flex-col")}
       onClick={clickHandler}
+      draggable={!minified}
+      onDragStart={onDragStart}
     >
       <h2 className={clsx(minified ? "text-sm" : "text-lg", "line-clamp-1")}>
         {todo.title}
