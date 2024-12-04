@@ -5,6 +5,7 @@ export default function Button({
   type = "button",
   onClick = () => {},
   styleType = "primary",
+  className = "",
   children,
 }) {
   return (
@@ -14,7 +15,8 @@ export default function Button({
       className={clsx(
         styles.buttonMain,
         styleType === "primary" && styles.primary,
-        styleType === "danger" && styles.danger
+        styleType === "danger" && styles.danger,
+        className
       )}
     >
       {children}

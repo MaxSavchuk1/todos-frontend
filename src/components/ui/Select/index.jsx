@@ -1,16 +1,23 @@
 import React from "react";
 import { useFormikContext, Field } from "formik";
-import styles from "./styles.module.css";
+import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import clsx from "clsx";
+import styles from "./styles.module.css";
 
-const Select = ({ name, onChange, optionValues = [], placeholder = "" }) => {
+const Select = ({
+  name,
+  onChange,
+  optionValues = [],
+  placeholder = "",
+  className = "",
+}) => {
   const { values, setFieldValue } = useFormikContext();
   const defaultOnChange = (e) => {
     setFieldValue(name, e.target.value);
   };
 
   return (
-    <div className="flex-1">
+    <div className={clsx(styles.container, className)}>
       <Field
         as="select"
         name={name}
@@ -26,6 +33,7 @@ const Select = ({ name, onChange, optionValues = [], placeholder = "" }) => {
           </option>
         ))}
       </Field>
+      <ChevronDownIcon aria-hidden="true" className={styles.selectIcon} />
     </div>
   );
 };

@@ -1,36 +1,33 @@
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 import useTodos from "../../hooks/useTodos";
 import styles from "./style.module.css";
-// import Draggable from "react-draggable";
+import clsx from "clsx";
 
-export default function TodoCard({ todo }) {
-  const { setSelectedTodo, setShowModal } = useTodos();
+export default function TodoCard({ todo, minified = false }) {
+  const { setShowModal, pushToIdsStack } = useTodos();
 
   const createdTime = useMemo(
     () => new Date(todo.createdAt).toLocaleString(),
     [todo]
   );
 
-  const nodeRef = useRef(null);
-
   const clickHandler = () => {
-    setSelectedTodo(todo);
+    pushToIdsStack(todo.id);
     setShowModal(true);
   };
 
-  // const eventLogger = (e, data) => {
-  //   console.log("Event: ", e);
-  //   console.log("Data: ", data);
-  // };
-
   return (
-    // <Draggable nodeRef={nodeRef} onMouseDown={eventLogger} onStop={eventLogger}>
-    <div ref={nodeRef} className={styles.cardContainer} onClick={clickHandler}>
-      <h2 className="text-lg line-clamp-2">{todo.title}</h2>
-      <div>
-        <span className="text-xs font-bold">Created at:&nbsp;</span>
-        <span className="text-xs">{createdTime}</span>
-      </div>
+    <div className={styles.cardContainer} onClick={clickHandler}>
+      <h2 className={clsx(minified ? "text-sm" : "text-lg", "line-clamp-1")}>
+        {todo.title}
+      </h2>
+
+      {!minified && (
+        <div className={styles.createdAt}>
+          <span className="text-xs font-bold">Created at:&nbsp;</span>
+          <span className="text-xs">{createdTime}</span>
+        </div>
+      )}
     </div>
   );
 }

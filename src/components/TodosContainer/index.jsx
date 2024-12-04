@@ -4,8 +4,8 @@ import { STATUSES } from "../../constants";
 import TodoCard from "../TodoCard";
 import useTodos from "../../hooks/useTodos";
 
-export default function TodosContainer({ todos }) {
-  const { setShowModal } = useTodos();
+export default function TodosContainer() {
+  const { setShowModal, todos } = useTodos();
 
   const groupedTodos = useMemo(() => {
     return Object.groupBy(todos, (todo) => todo.status);
