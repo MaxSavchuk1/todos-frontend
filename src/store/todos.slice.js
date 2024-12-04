@@ -24,9 +24,6 @@ const todosSlice = createSlice({
     setShowModal: (state, action) => {
       state.showModal = action.payload;
     },
-    // setSelectedTodoId: (state, action) => {
-    //   state.selectedTodoId = action.payload;
-    // },
     pushToIdsStack: (state, action) => {
       state.todosIdsStack = [...state.todosIdsStack, action.payload];
     },
@@ -46,14 +43,12 @@ const todosSlice = createSlice({
       .addCase(fetchTodos.rejected, (state, action) => {})
       .addCase(fetchTodos.fulfilled, (state, action) => {
         state.todos = action.payload;
-        // state.status.todos = REQUEST_STATUTES.RESOLVED;
       });
   },
 });
 
 export const {
   setShowModal,
-  // setSelectedTodoId,
   pushToIdsStack,
   removeFromIdsStack,
   clearTodosIdsStack,

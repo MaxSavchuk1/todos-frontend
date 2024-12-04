@@ -49,12 +49,20 @@ export default function TodoDialog() {
   const handleSubmit = async (values) => {
     try {
       if (!currentTodo) {
-        await createTodo(values);
+        if (currentId) {
+          await createTodo({ ...values, parentId: currentId });
+        } else {
+          await createTodo(values);
+        }
       } else {
         await updateTodo(currentTodo.id, values);
       }
-      fetchTodos();
-      close();
+      if (currentId) {
+        await fetchTodo();
+      } else {
+        fetchTodos();
+        close();
+      }
     } catch (e) {
       console.error("error", e);
     }
@@ -80,9 +88,7 @@ export default function TodoDialog() {
   };
 
   const handleCreateChildTodo = async () => {
-    // close();
-    await sleep(300);
-    // setShowModal(true);
+    setCurrentTodo(null);
   };
 
   const handleBreadcrumbClick = (id) => {
@@ -122,6 +128,8 @@ export default function TodoDialog() {
 
   return (
     <Dialog open={showModal} handleClose={close}>
+      {/***** BREADCRUMBS ****/}
+
       {!isEdit && todosIdsStack.length && (
         <ul className={styles.breadcrumbs}>
           <li
@@ -146,6 +154,8 @@ export default function TodoDialog() {
           ))}
         </ul>
       )}
+
+      {/***** CONTENT ****/}
 
       <Formik
         initialValues={formValues}

@@ -2,7 +2,6 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import {
   setShowModal as setShowModalAction,
-  // setSelectedTodoId as setSelectedTodoIdAction,
   fetchTodos as fetchTodosAction,
   pushToIdsStack as pushToIdsStackAction,
   removeFromIdsStack as removeFromIdsStackAction,
@@ -14,9 +13,6 @@ const useTodos = () => {
   const dispatch = useDispatch();
 
   const showModal = useCustomSelector((state) => state.todos.showModal);
-  // const selectedTodoId = useCustomSelector(
-  //   (state) => state.todos.selectedTodoId
-  // );
   const todos = useCustomSelector((state) => state.todos.todos);
   const todosIdsStack = useCustomSelector((state) => state.todos.todosIdsStack);
 
@@ -24,11 +20,6 @@ const useTodos = () => {
     (v) => dispatch(setShowModalAction(v)),
     [dispatch]
   );
-
-  // const setSelectedTodoId = useCallback(
-  //   (v) => dispatch(setSelectedTodoIdAction(v)),
-  //   [dispatch]
-  // );
 
   const pushToIdsStack = useCallback(
     (v) => dispatch(pushToIdsStackAction(v)),
@@ -52,12 +43,10 @@ const useTodos = () => {
 
   return {
     showModal,
-    // selectedTodoId,
     todos,
     todosIdsStack,
 
     setShowModal,
-    // setSelectedTodoId,
     fetchTodos,
     pushToIdsStack,
     removeFromIdsStack,

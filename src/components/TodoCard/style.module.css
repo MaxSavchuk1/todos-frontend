@@ -1,7 +1,11 @@
 .cardContainer {
-  @apply flex flex-col h-fit w-full border border-black rounded-md cursor-pointer bg-slate-300 p-2;
+  @apply flex h-fit w-full border border-black rounded-md cursor-pointer bg-slate-300 p-2;
 }
 
 .createdAt {
   @apply mt-11;
+}
+
+.status {
+  @apply ml-auto text-xs font-bold;
 }
