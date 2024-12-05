@@ -4,7 +4,6 @@ import { getTodos } from "../api";
 const initialState = {
   todos: [],
   showModal: false,
-  selectedTodoId: null,
   todosIdsStack: [],
 };
 
