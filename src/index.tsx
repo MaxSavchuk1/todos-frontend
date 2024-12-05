@@ -4,11 +4,11 @@ import { Provider } from "react-redux";
 import { SnackbarProvider } from "notistack";
 
 import App from "./App";
-import { store } from "./store";
-import { fetchTodos } from "./store/todos.slice";
+import { store } from "./store/index";
+import { fetchTodos } from "./store/todos.slice.ts";
 import "./index.css";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById("root")!);
 
 store.dispatch(fetchTodos());
 

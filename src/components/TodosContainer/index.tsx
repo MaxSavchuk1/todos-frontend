@@ -1,27 +1,31 @@
 import { useMemo, useRef } from "react";
+import { groupBy } from "lodash";
 import styles from "./styles.module.css";
-import { STATUSES } from "../../constants";
+import { STATUSES } from "@/constants";
 import TodoCard from "../TodoCard";
-import useTodos from "../../hooks/useTodos";
-import { updateTodo } from "../../api";
+import useTodos from "@/hooks/useTodos";
+import { updateTodo } from "@/api";
+import type { TodoStatus, Todo } from "@/helpers/types";
+
+type GroupedTodos = Record<TodoStatus, Todo[] | undefined>;
 
 export default function TodosContainer() {
   const { setShowModal, todos, fetchTodos } = useTodos();
 
-  const draggedTodoId = useRef(null);
+  const draggedTodoId = useRef<string | null>(null);
 
   const groupedTodos = useMemo(() => {
-    if (!todos) return [];
-    return Object.groupBy(todos, (todo) => todo.status);
+    if (!todos) return {} as GroupedTodos;
+    return groupBy(todos, (todo) => todo.status) as GroupedTodos;
   }, [todos]);
 
-  const onDrop = async (e) => {
-    const [todoStatus, todoId] = draggedTodoId.current.split("_");
-    const targetColumn = e.currentTarget.id.replaceAll("_", " ");
+  const onDrop = async ({ currentTarget }: React.DragEvent<HTMLDivElement>) => {
+    const [todoStatus, todoId] = draggedTodoId.current!.split("_");
+    const targetColumn = currentTarget.id.replaceAll("_", " ");
 
     if (targetColumn && todoStatus !== targetColumn) {
       try {
-        await updateTodo(todoId, { status: targetColumn });
+        await updateTodo(todoId, { status: targetColumn as TodoStatus });
         fetchTodos();
       } catch (e) {
         console.error("error", e);
@@ -29,12 +33,12 @@ export default function TodosContainer() {
     }
   };
 
-  const onDragOver = (e) => {
+  const onDragOver = (e: any) => {
     e.preventDefault();
     e.stopPropagation();
   };
 
-  const handleDragTodo = (id) => {
+  const handleDragTodo = (id: string) => {
     draggedTodoId.current = id;
   };
 

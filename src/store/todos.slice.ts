@@ -1,20 +1,30 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getTodos } from "../api";
+import type { Todo } from "@/helpers/types";
 
-const initialState = {
+export type TodosState = {
+  todos: Todo[];
+  showModal: boolean;
+  todosIdsStack: number[];
+};
+
+const initialState: TodosState = {
   todos: [],
   showModal: false,
   todosIdsStack: [],
 };
 
-export const fetchTodos = createAsyncThunk("@@todos/fetchTodos", async () => {
-  try {
-    const response = await getTodos();
-    return response;
-  } catch (e) {
-    console.error("error", e);
+export const fetchTodos = createAsyncThunk<any, void>(
+  "@@todos/fetchTodos",
+  async () => {
+    try {
+      const response = await getTodos();
+      return response;
+    } catch (e) {
+      console.error("error", e);
+    }
   }
-});
+);
 
 const todosSlice = createSlice({
   name: "@@todos",
@@ -38,8 +48,8 @@ const todosSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTodos.pending, (state) => {})
-      .addCase(fetchTodos.rejected, (state, action) => {})
+      .addCase(fetchTodos.pending, () => {})
+      .addCase(fetchTodos.rejected, () => {})
       .addCase(fetchTodos.fulfilled, (state, action) => {
         state.todos = action.payload;
       });

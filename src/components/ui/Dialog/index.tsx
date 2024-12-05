@@ -2,7 +2,17 @@ import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import styles from "./styles.module.css";
 
-export default function DialogContainer({ handleClose, open, children }) {
+type Props = {
+  open: boolean;
+  handleClose: (value: boolean) => void;
+  children: React.ReactNode;
+};
+
+export default function DialogContainer({
+  handleClose,
+  open,
+  children,
+}: Props) {
   return (
     <Dialog open={open} onClose={handleClose} className="relative z-10">
       <DialogBackdrop transition className={styles.backdrop} />

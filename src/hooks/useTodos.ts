@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@/store";
 import {
   setShowModal as setShowModalAction,
   fetchTodos as fetchTodosAction,
@@ -10,24 +10,24 @@ import {
 import useCustomSelector from "./useCustomSelector";
 
 const useTodos = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const showModal = useCustomSelector((state) => state.todos.showModal);
   const todos = useCustomSelector((state) => state.todos.todos);
   const todosIdsStack = useCustomSelector((state) => state.todos.todosIdsStack);
 
   const setShowModal = useCallback(
-    (v) => dispatch(setShowModalAction(v)),
+    (v: boolean) => dispatch(setShowModalAction(v)),
     [dispatch]
   );
 
   const pushToIdsStack = useCallback(
-    (v) => dispatch(pushToIdsStackAction(v)),
+    (v: number) => dispatch(pushToIdsStackAction(v)),
     [dispatch]
   );
 
   const removeFromIdsStack = useCallback(
-    (v) => dispatch(removeFromIdsStackAction(v)),
+    (v: number) => dispatch(removeFromIdsStackAction(v)),
     [dispatch]
   );
 

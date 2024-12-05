@@ -1,9 +1,20 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import clsx from "clsx";
-import useTodos from "../../hooks/useTodos";
+import useTodos from "@/hooks/useTodos.ts";
 import styles from "./style.module.css";
+import type { Todo } from "@/helpers/types";
 
-export default function TodoCard({ todo, minified = false, handleDragTodo }) {
+type Props = {
+  todo: Todo;
+  minified?: boolean;
+  handleDragTodo?: (id: string) => void;
+};
+
+export default function TodoCard({
+  todo,
+  minified = false,
+  handleDragTodo,
+}: Props) {
   const { setShowModal, pushToIdsStack } = useTodos();
 
   const createdTime = useMemo(
@@ -16,8 +27,9 @@ export default function TodoCard({ todo, minified = false, handleDragTodo }) {
     setShowModal(true);
   };
 
-  const onDragStart = (e) => {
-    handleDragTodo(e.target.id);
+  const onDragStart = ({ target }: React.DragEvent<HTMLDivElement>) => {
+    const { id } = target as HTMLElement;
+    handleDragTodo!(id);
   };
 
   return (
