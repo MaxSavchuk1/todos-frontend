@@ -2,18 +2,18 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { pick } from "lodash";
 import { enqueueSnackbar } from "notistack";
-
-import { STATUSES } from "../../constants";
-import { sleep } from "../../helpers";
-import { Select, Button, Dialog } from "../ui";
-import useTodos from "../../hooks/useTodos";
-import { createTodo, deleteTodo, getTodoById, updateTodo } from "../../api";
-import TodoCard from "../TodoCard";
-
-import styles from "./styles.module.css";
 import { ChevronRightIcon } from "@heroicons/react/16/solid";
 
-const initialFormValues = {
+import { STATUSES } from "@/constants";
+import { sleep } from "@/helpers";
+import { Select, Button, Dialog } from "../ui";
+import useTodos from "@/hooks/useTodos";
+import { createTodo, deleteTodo, getTodoById, updateTodo } from "@/api";
+import TodoCard from "../TodoCard";
+import styles from "./styles.module.css";
+import type { FormValues, Todo, TodoStatus } from "@/helpers/types";
+
+const initialFormValues: FormValues = {
   title: "",
   body: "",
   status: "new",
@@ -33,14 +33,14 @@ export default function TodoDialog() {
 
   const [isEdit, setIsEdit] = useState(false);
   const [formValues, setFormValues] = useState(initialFormValues);
-  const [currentTodo, setCurrentTodo] = useState(null);
+  const [currentTodo, setCurrentTodo] = useState<Todo | null>(null);
 
   const fetchTodo = useCallback(async () => {
     try {
       if (!currentId) return;
 
       const response = await getTodoById(currentId);
-      setCurrentTodo(response);
+      setCurrentTodo(response as any);
     } catch (e) {
       console.error("error", e);
     }
@@ -51,7 +51,7 @@ export default function TodoDialog() {
     fetchTodos();
   };
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values: FormValues) => {
     try {
       if (!currentTodo) {
         if (currentId) {
@@ -76,7 +76,7 @@ export default function TodoDialog() {
   const handleDelete = async () => {
     try {
       if (window.confirm("Are you shure?")) {
-        await deleteTodo(currentId);
+        await deleteTodo(currentId as number);
         successHandler("Todo was deleted");
         close();
       }
@@ -85,9 +85,9 @@ export default function TodoDialog() {
     }
   };
 
-  const handleUpdateStatus = async (value) => {
+  const handleUpdateStatus = async (value: TodoStatus) => {
     try {
-      await updateTodo(currentTodo.id, { status: value });
+      await updateTodo(currentTodo!.id, { status: value });
       fetchTodos();
     } catch (e) {
       console.error("error", e);
@@ -98,7 +98,7 @@ export default function TodoDialog() {
     setCurrentTodo(null);
   };
 
-  const handleBreadcrumbClick = (id) => {
+  const handleBreadcrumbClick = (id: number) => {
     if (id !== currentId) {
       removeFromIdsStack(id);
     }
@@ -112,11 +112,18 @@ export default function TodoDialog() {
   };
 
   const transformedSelectedTodo = useMemo(() => {
-    const neededValues = pick(currentTodo, Object.keys(initialFormValues));
-    Object.keys(neededValues).forEach(
-      (key) => neededValues[key] === null && (neededValues[key] = "")
+    const pickedValues = pick(
+      currentTodo,
+      Object.keys(initialFormValues)
+    ) as FormValues;
+
+    Object.keys(pickedValues).forEach(
+      (key) =>
+        pickedValues[key as keyof FormValues] === null &&
+        (pickedValues[key as keyof Omit<FormValues, "status">] = "")
     );
-    return neededValues;
+
+    return pickedValues;
   }, [currentTodo]);
 
   useEffect(() => {
@@ -146,7 +153,7 @@ export default function TodoDialog() {
             {`TODO-${todosIdsStack[0]}`}
           </li>
 
-          {todosIdsStack.toSpliced(0, 1).map((id) => (
+          {todosIdsStack.toSpliced(0, 1).map((id: number) => (
             <li key={"crumb" + id}>
               <div className="flex items-center">
                 <ChevronRightIcon className="size-5 shrink-0 text-gray-400" />
@@ -213,11 +220,11 @@ export default function TodoDialog() {
             {currentTodo && !isEdit && (
               <Select
                 name="status"
-                optionValues={STATUSES}
+                optionValues={[...STATUSES]}
                 className="w-40 ml-auto"
                 onChange={(e) => {
-                  const value = e.target.value;
-                  handleUpdateStatus(value);
+                  const { value } = e.target;
+                  handleUpdateStatus(value as TodoStatus);
                   setFieldValue("status", value);
                 }}
               />
@@ -227,7 +234,7 @@ export default function TodoDialog() {
 
             {currentTodo?.children && !isEdit && (
               <div className="w-full flex flex-col gap-1 max-h-28 overflow-y-scroll">
-                {currentTodo.children.map((childTodo) => (
+                {(currentTodo.children as Todo[]).map((childTodo) => (
                   <TodoCard key={childTodo.id} todo={childTodo} minified />
                 ))}
               </div>

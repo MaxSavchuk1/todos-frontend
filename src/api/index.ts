@@ -1,3 +1,4 @@
+import { Todo } from "../helpers/types";
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 
@@ -26,10 +27,12 @@ apiInstance.interceptors.response.use(
 
 export const getTodos = () => apiInstance.get("/");
 
-export const getTodoById = (id) => apiInstance.get(`/${id}`);
+export const getTodoById = (id: number) => apiInstance.get(`/${id}`);
 
-export const createTodo = (data) => apiInstance.post("/create", data);
+export const createTodo = (data: Partial<Todo>) =>
+  apiInstance.post("/create", data);
 
-export const deleteTodo = (id) => apiInstance.delete(`/${id}`);
+export const deleteTodo = (id: number) => apiInstance.delete(`/${id}`);
 
-export const updateTodo = (id, data) => apiInstance.patch(`/${id}`, data);
+export const updateTodo = (id: number | string, data: Partial<Todo>) =>
+  apiInstance.patch(`/${id}`, data);

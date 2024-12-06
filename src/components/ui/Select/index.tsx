@@ -1,8 +1,16 @@
-import React from "react";
 import { useFormikContext, Field } from "formik";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import clsx from "clsx";
+import type { InputEvent } from "@/helpers/types";
 import styles from "./styles.module.css";
+
+type Props = {
+  name: string;
+  onChange?: (e: InputEvent) => void;
+  optionValues: string[];
+  placeholder?: string;
+  className?: string;
+};
 
 const Select = ({
   name,
@@ -10,9 +18,9 @@ const Select = ({
   optionValues = [],
   placeholder = "",
   className = "",
-}) => {
-  const { values, setFieldValue } = useFormikContext();
-  const defaultOnChange = (e) => {
+}: Props) => {
+  const { values, setFieldValue } = useFormikContext<Record<string, string>>();
+  const defaultOnChange = (e: InputEvent) => {
     setFieldValue(name, e.target.value);
   };
 
