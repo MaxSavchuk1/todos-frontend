@@ -3,7 +3,7 @@ import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 
 const axiosOptions = {
-  baseURL: "http://localhost:4000/todos",
+  baseURL: "http://localhost:4000/api/todos",
 };
 
 const apiInstance = axios.create(axiosOptions);

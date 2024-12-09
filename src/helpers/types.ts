@@ -18,3 +18,18 @@ export type Todo = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type LoginRequest = {
+  email: string;
+  password: string;
+};
+
+export type SignUpRequest = LoginRequest & {
+  lastName: string;
+  firstName: string;
+};
+
+export type TokensResponse = {
+  access_token: string;
+  refresh_token: string;
+};
