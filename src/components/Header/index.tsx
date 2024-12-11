@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../ui";
 import { useAppDispatch } from "@/store";
 import { clearTokens } from "@/store/auth.slice";
+import { clearTodos } from "@/store/todos.slice";
 
 export default function Header() {
   const dispatch = useAppDispatch();
@@ -10,6 +11,7 @@ export default function Header() {
 
   const logOut = () => {
     dispatch(clearTokens());
+    dispatch(clearTodos());
     navigate("/sing-in");
   };
   return (
