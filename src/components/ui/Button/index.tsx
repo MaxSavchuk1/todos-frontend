@@ -7,6 +7,7 @@ type Props = {
   styleType?: "primary" | "danger";
   className?: string;
   children: React.ReactNode;
+  disabled?: boolean;
 };
 
 export default function Button({
@@ -14,12 +15,14 @@ export default function Button({
   onClick = () => {},
   styleType = "primary",
   className = "",
+  disabled = false,
   children,
 }: Props) {
   return (
     <button
       type={type}
       onClick={onClick}
+      disabled={disabled}
       className={clsx(
         styles.buttonMain,
         styleType === "primary" && styles.primary,

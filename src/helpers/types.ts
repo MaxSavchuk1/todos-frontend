@@ -33,3 +33,9 @@ export type TokensResponse = {
   access_token: string;
   refresh_token: string;
 };
+
+export type UserProfile = {
+  firstName: string;
+  lastName: string;
+  email: string;
+};

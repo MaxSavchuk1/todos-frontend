@@ -4,13 +4,13 @@ import styles from "./styles.module.css";
 import { STATUSES } from "@/constants";
 import TodoCard from "../TodoCard";
 import useTodos from "@/hooks/useTodos";
-import { updateTodo } from "@/api";
 import type { TodoStatus, Todo } from "@/helpers/types";
 
 type GroupedTodos = Record<TodoStatus, Todo[] | undefined>;
 
 export default function TodosContainer() {
-  const { setShowModal, todos, fetchTodos } = useTodos();
+  const { setShowModal, todos, useUpdateTodoMutation, fetchTodos } = useTodos();
+  const [updateTodo] = useUpdateTodoMutation();
 
   const draggedTodoId = useRef<string | null>(null);
 
@@ -25,8 +25,11 @@ export default function TodosContainer() {
 
     if (targetColumn && todoStatus !== targetColumn) {
       try {
-        await updateTodo(todoId, { status: targetColumn as TodoStatus });
-        fetchTodos();
+        await updateTodo({
+          id: +todoId,
+          data: { status: targetColumn as TodoStatus },
+        }).unwrap();
+        await fetchTodos();
       } catch (e) {
         console.error("error", e);
       }

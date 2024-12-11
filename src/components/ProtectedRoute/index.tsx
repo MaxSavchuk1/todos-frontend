@@ -1,14 +1,16 @@
-import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { AppState } from "@/store";
+import { Navigate } from "react-router-dom";
+import useCustomSelector from "@/hooks/useCustomSelector";
 
-export const ProtectedRoute: React.FC = () => {
-  const accessToken = useSelector((state: AppState) => state.auth.accessToken);
+type Props = {
+  children: React.ReactNode;
+};
+
+export default function ProtectedRoute({ children }: Props) {
+  const accessToken = useCustomSelector((state) => state.auth.accessToken);
 
   if (!accessToken) {
     return <Navigate to="/sign-in" replace />;
   }
 
-  return <Outlet />;
-};
+  return children;
+}

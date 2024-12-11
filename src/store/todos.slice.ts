@@ -1,5 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getTodos } from "../api";
+import { createSlice } from "@reduxjs/toolkit";
 import type { Todo } from "@/helpers/types";
 
 export type TodosState = {
@@ -13,18 +12,6 @@ const initialState: TodosState = {
   showModal: false,
   todosIdsStack: [],
 };
-
-export const fetchTodos = createAsyncThunk<any, void>(
-  "@@todos/fetchTodos",
-  async () => {
-    try {
-      const response = await getTodos();
-      return response;
-    } catch (e) {
-      console.error("error", e);
-    }
-  }
-);
 
 const todosSlice = createSlice({
   name: "@@todos",
@@ -45,14 +32,9 @@ const todosSlice = createSlice({
     clearTodosIdsStack: (state) => {
       state.todosIdsStack = [];
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchTodos.pending, () => {})
-      .addCase(fetchTodos.rejected, () => {})
-      .addCase(fetchTodos.fulfilled, (state, action) => {
-        state.todos = action.payload;
-      });
+    setTodos: (state, action) => {
+      state.todos = action.payload;
+    },
   },
 });
 
@@ -61,6 +43,7 @@ export const {
   pushToIdsStack,
   removeFromIdsStack,
   clearTodosIdsStack,
+  setTodos,
 } = todosSlice.actions;
 
 export const todosSliceReducer = todosSlice.reducer;

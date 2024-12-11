@@ -1,14 +1,13 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { pick } from "lodash";
-import { enqueueSnackbar } from "notistack";
+import notify from "@/services/notify";
 import { ChevronRightIcon } from "@heroicons/react/16/solid";
 
 import { STATUSES } from "@/constants";
 import { sleep } from "@/helpers";
 import { Select, Button, Dialog } from "../ui";
 import useTodos from "@/hooks/useTodos";
-import { createTodo, deleteTodo, getTodoById, updateTodo } from "@/api";
 import TodoCard from "../TodoCard";
 import styles from "./styles.module.css";
 import type { FormValues, Todo, TodoStatus } from "@/helpers/types";
@@ -27,27 +26,23 @@ export default function TodoDialog() {
     fetchTodos,
     removeFromIdsStack,
     clearTodosIdsStack,
+    useCreateTodoMutation,
+    useDeleteTodoMutation,
+    useLazyGetTodoByIdQuery,
+    useUpdateTodoMutation,
   } = useTodos();
+  const [trigger, { data: currentTodo, reset }] = useLazyGetTodoByIdQuery();
+  const [createTodo] = useCreateTodoMutation();
+  const [updateTodo] = useUpdateTodoMutation();
+  const [deleteTodo] = useDeleteTodoMutation();
 
   const currentId = todosIdsStack.at(-1);
 
   const [isEdit, setIsEdit] = useState(false);
   const [formValues, setFormValues] = useState(initialFormValues);
-  const [currentTodo, setCurrentTodo] = useState<Todo | null>(null);
-
-  const fetchTodo = useCallback(async () => {
-    try {
-      if (!currentId) return;
-
-      const response = await getTodoById(currentId);
-      setCurrentTodo(response as any);
-    } catch (e) {
-      console.error("error", e);
-    }
-  }, [currentId]);
 
   const successHandler = (message = "Success!") => {
-    enqueueSnackbar(message, { variant: "success" });
+    notify(message, "success");
     fetchTodos();
   };
 
@@ -55,15 +50,16 @@ export default function TodoDialog() {
     try {
       if (!currentTodo) {
         if (currentId) {
-          await createTodo({ ...values, parentId: currentId });
+          await createTodo({ ...values, parentId: currentId }).unwrap();
         } else {
-          await createTodo(values);
+          await createTodo(values).unwrap();
         }
       } else {
-        await updateTodo(currentTodo.id, values);
+        await updateTodo({ id: currentTodo.id, data: values }).unwrap();
       }
       if (currentId) {
-        await fetchTodo();
+        await trigger(currentId);
+        await fetchTodos();
       } else {
         successHandler();
         close();
@@ -76,7 +72,7 @@ export default function TodoDialog() {
   const handleDelete = async () => {
     try {
       if (window.confirm("Are you shure?")) {
-        await deleteTodo(currentId as number);
+        await deleteTodo(currentId!);
         successHandler("Todo was deleted");
         close();
       }
@@ -87,15 +83,18 @@ export default function TodoDialog() {
 
   const handleUpdateStatus = async (value: TodoStatus) => {
     try {
-      await updateTodo(currentTodo!.id, { status: value });
-      fetchTodos();
+      await updateTodo({
+        id: currentTodo!.id,
+        data: { status: value },
+      }).unwrap();
+      await fetchTodos();
     } catch (e) {
       console.error("error", e);
     }
   };
 
   const handleCreateChildTodo = async () => {
-    setCurrentTodo(null);
+    reset();
   };
 
   const handleBreadcrumbClick = (id: number) => {
@@ -108,7 +107,7 @@ export default function TodoDialog() {
     setShowModal(false);
     await sleep(200);
     clearTodosIdsStack();
-    setCurrentTodo(null);
+    reset();
   };
 
   const transformedSelectedTodo = useMemo(() => {
@@ -127,8 +126,8 @@ export default function TodoDialog() {
   }, [currentTodo]);
 
   useEffect(() => {
-    fetchTodo();
-  }, [currentId, fetchTodo]);
+    currentId && trigger(currentId);
+  }, [currentId, trigger]);
 
   useEffect(() => {
     if (!currentTodo) {

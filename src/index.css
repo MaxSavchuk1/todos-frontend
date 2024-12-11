@@ -10,3 +10,11 @@
 .text-input {
   @apply block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 text-sm/6;
 }
+
+.router-link {
+  @apply text-sm font-semibold leading-6 text-sky-600;
+}
+
+input:disabled {
+  @apply cursor-not-allowed bg-gray-100;
+}

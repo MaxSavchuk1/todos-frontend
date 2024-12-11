@@ -2,12 +2,19 @@ import { useCallback } from "react";
 import { useAppDispatch } from "@/store";
 import {
   setShowModal as setShowModalAction,
-  fetchTodos as fetchTodosAction,
+  setTodos as setTodosAction,
   pushToIdsStack as pushToIdsStackAction,
   removeFromIdsStack as removeFromIdsStackAction,
   clearTodosIdsStack as clearTodosIdsStackAction,
-} from "../store/todos.slice";
+} from "@/store/todos.slice";
 import useCustomSelector from "./useCustomSelector";
+import {
+  api,
+  useCreateTodoMutation,
+  useDeleteTodoMutation,
+  useLazyGetTodoByIdQuery,
+  useUpdateTodoMutation,
+} from "@/services/api";
 
 const useTodos = () => {
   const dispatch = useAppDispatch();
@@ -36,10 +43,10 @@ const useTodos = () => {
     [dispatch]
   );
 
-  const fetchTodos = useCallback(
-    () => dispatch(fetchTodosAction()),
-    [dispatch]
-  );
+  const fetchTodos = useCallback(async () => {
+    const result = await dispatch(api.endpoints.getTodos.initiate());
+    dispatch(setTodosAction(result.data));
+  }, [dispatch]);
 
   return {
     showModal,
@@ -47,10 +54,16 @@ const useTodos = () => {
     todosIdsStack,
 
     setShowModal,
-    fetchTodos,
     pushToIdsStack,
     removeFromIdsStack,
     clearTodosIdsStack,
+
+    fetchTodos,
+
+    useCreateTodoMutation,
+    useDeleteTodoMutation,
+    useLazyGetTodoByIdQuery,
+    useUpdateTodoMutation,
   };
 };
 

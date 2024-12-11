@@ -1,20 +1,39 @@
-import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Link } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
-import { useLoginMutation } from "@/services/api";
-import { useDispatch } from "react-redux";
-import { setTokens } from "@/store/auth.slice";
-import { useNavigate } from "react-router-dom";
+import { LoginRequest } from "@/helpers/types";
+import { Button } from "@/components/ui";
+import useLogin from "@/hooks/useLogin";
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
-  password: Yup.string().required("Required"),
+  password: Yup.string().required("Required").min(6, "Minimum 6 characters"),
 });
 
-export const SignInForm: React.FC = () => {
-  const [login] = useLoginMutation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+const initialValues: LoginRequest = {
+  email: "",
+  password: "",
+};
+
+export default function SignIn() {
+  const { loginRequest } = useLogin();
+
+  const submitHandler = async (
+    values: LoginRequest,
+    { setSubmitting, setFieldError }: FormikHelpers<LoginRequest>
+  ) => {
+    try {
+      await loginRequest(values);
+    } catch (error) {
+      const messages = (error as any)?.data?.messageByField;
+      if (messages) {
+        Object.keys(messages).forEach((key) =>
+          setFieldError(key, messages[key])
+        );
+      }
+    }
+    setSubmitting(false);
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -23,58 +42,49 @@ export const SignInForm: React.FC = () => {
           Sign in to your account
         </h2>
         <Formik
-          initialValues={{ email: "", password: "" }}
+          initialValues={initialValues}
           validationSchema={SignInSchema}
-          onSubmit={async (values, { setSubmitting }) => {
-            try {
-              const result = await login(values).unwrap();
-              dispatch(setTokens(result));
-              navigate("/");
-            } catch (error) {
-              console.error("Failed to sign in:", error);
-            }
-            setSubmitting(false);
-          }}
+          onSubmit={submitHandler}
         >
           {({ isSubmitting }) => (
             <Form className="mt-8 space-y-6">
-              <div className="rounded-md shadow-sm -space-y-px">
+              <div className="space-y-3">
                 <div>
                   <Field
                     name="email"
                     type="email"
-                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    className="text-input"
                     placeholder="Email address"
                   />
                   <ErrorMessage
                     name="email"
                     component="div"
-                    className="text-red-500 text-sm"
+                    className="text-red-500 text-xs"
                   />
                 </div>
                 <div>
                   <Field
                     name="password"
                     type="password"
-                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    className="text-input"
                     placeholder="Password"
                   />
                   <ErrorMessage
                     name="password"
                     component="div"
-                    className="text-red-500 text-sm"
+                    className="text-red-500 text-xs"
                   />
                 </div>
               </div>
 
-              <div>
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
+              <div className="flex items-center justify-between">
+                <Button type="submit" disabled={isSubmitting}>
                   Sign in
-                </button>
+                </Button>
+
+                <Link to="/sign-up" className="router-link">
+                  Create an account
+                </Link>
               </div>
             </Form>
           )}
@@ -82,4 +92,4 @@ export const SignInForm: React.FC = () => {
       </div>
     </div>
   );
-};
+}

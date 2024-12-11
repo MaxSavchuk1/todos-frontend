@@ -1,14 +1,17 @@
+import { parseToken } from "@/helpers";
 import { TokensResponse } from "@/helpers/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type AuthState = {
   accessToken: string | null;
   refreshToken: string | null;
+  loggedUserId: number | null;
 };
 
 const initialState: AuthState = {
   accessToken: localStorage.getItem("accessToken"),
   refreshToken: localStorage.getItem("refreshToken"),
+  loggedUserId: null,
 };
 
 const authSlice = createSlice({
@@ -20,10 +23,12 @@ const authSlice = createSlice({
       state.refreshToken = action.payload.refresh_token;
       localStorage.setItem("accessToken", action.payload.access_token);
       localStorage.setItem("refreshToken", action.payload.refresh_token);
+      state.loggedUserId = parseToken(action.payload.access_token).sub;
     },
     clearTokens: (state) => {
       state.accessToken = null;
       state.refreshToken = null;
+      state.loggedUserId = null;
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
     },
