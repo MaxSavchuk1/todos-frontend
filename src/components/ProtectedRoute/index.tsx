@@ -6,9 +6,9 @@ type Props = {
 };
 
 export default function ProtectedRoute({ children }: Props) {
-  const accessToken = useCustomSelector((state) => state.auth.accessToken);
+  const loggedUserId = useCustomSelector((state) => state.auth.loggedUserId);
 
-  if (!accessToken) {
+  if (!loggedUserId) {
     return <Navigate to="/sign-in" replace />;
   }
 

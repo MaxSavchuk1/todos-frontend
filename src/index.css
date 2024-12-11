@@ -18,3 +18,7 @@
 input:disabled {
   @apply cursor-not-allowed bg-gray-100;
 }
+
+.field-error {
+  @apply text-red-500 text-xs;
+}

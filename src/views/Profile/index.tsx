@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
+import { Formik, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { Button } from "@/components/ui";
-import { useGetProfileQuery, useUpdateProfileMutation } from "@/services/api";
+import { useUpdateProfileMutation } from "@/services/api/modules/users";
+import { useGetProfileQuery } from "@/services/api/modules/auth";
 import { UserProfile } from "@/helpers/types";
 import styles from "./styles.module.css";
+import Input from "@/components/ui/Input";
 
 const initialFormValues: UserProfile = {
   firstName: "",
@@ -61,26 +63,21 @@ export default function Profile() {
       >
         {({ isSubmitting, resetForm }) => (
           <Form>
-            <div className="space-y-4">
+            <div className="space-y-2">
               <div>
                 <label htmlFor="firstName" className={styles.label}>
                   First Name
                 </label>
                 {isEditing ? (
-                  <Field
-                    type="text"
+                  <Input
                     id="firstName"
                     name="firstName"
-                    className="text-input"
+                    type="text"
+                    placeholder="First Name"
                   />
                 ) : (
-                  <div className="mt-1 py-2">{userData?.firstName}</div>
+                  <div className="mt-1 pt-2 pb-4">{userData?.firstName}</div>
                 )}
-                <ErrorMessage
-                  name="firstName"
-                  component="div"
-                  className={styles.error}
-                />
               </div>
 
               <div>
@@ -88,20 +85,15 @@ export default function Profile() {
                   Last Name
                 </label>
                 {isEditing ? (
-                  <Field
-                    type="text"
+                  <Input
                     id="lastName"
+                    type="text"
                     name="lastName"
-                    className="text-input"
+                    placeholder="Last Name"
                   />
                 ) : (
-                  <div className="mt-1 py-2">{userData?.lastName}</div>
+                  <div className="mt-1 pt-2 pb-4">{userData?.lastName}</div>
                 )}
-                <ErrorMessage
-                  name="lastName"
-                  component="div"
-                  className={styles.error}
-                />
               </div>
 
               <div>
@@ -109,21 +101,16 @@ export default function Profile() {
                   Email
                 </label>
                 {isEditing ? (
-                  <Field
-                    type="email"
+                  <Input
                     id="email"
+                    type="email"
                     name="email"
-                    className="text-input"
+                    placeholder="Email"
                     disabled
                   />
                 ) : (
-                  <div className="mt-1 py-2">{userData?.email}</div>
+                  <div className="mt-1 pt-2 pb-4">{userData?.email}</div>
                 )}
-                <ErrorMessage
-                  name="email"
-                  component="div"
-                  className={styles.error}
-                />
               </div>
 
               <div className="flex justify-end space-x-2">

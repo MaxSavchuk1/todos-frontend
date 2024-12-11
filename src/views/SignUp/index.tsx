@@ -1,9 +1,11 @@
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
+import { Formik, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
-import { useSignupMutation } from "@/services/api";
+import { useSignupMutation } from "@/services/api/modules/users";
 import { SignUpRequest } from "@/helpers/types";
 import { Button } from "@/components/ui";
 import useLogin from "@/hooks/useLogin";
+import { Link } from "react-router-dom";
+import Input from "@/components/ui/Input";
 
 const SignUpSchema = Yup.object().shape({
   firstName: Yup.string().required("Required"),
@@ -54,65 +56,21 @@ export default function SignUp() {
         >
           {({ isSubmitting }) => (
             <Form className="mt-8 space-y-6">
-              <div className="space-y-3">
-                <div>
-                  <Field
-                    name="firstName"
-                    type="text"
-                    className="text-input"
-                    placeholder="First name"
-                  />
-                  <ErrorMessage
-                    name="firstName"
-                    component="div"
-                    className="text-red-500 text-xs"
-                  />
-                </div>
-                <div>
-                  <Field
-                    name="lastName"
-                    type="text"
-                    className="text-input"
-                    placeholder="Last name"
-                  />
-                  <ErrorMessage
-                    name="lastName"
-                    component="div"
-                    className="text-red-500 text-xs"
-                  />
-                </div>
-                <div>
-                  <Field
-                    name="email"
-                    type="email"
-                    className="text-input"
-                    placeholder="Email address"
-                  />
-                  <ErrorMessage
-                    name="email"
-                    component="div"
-                    className="text-red-500 text-xs"
-                  />
-                </div>
-                <div>
-                  <Field
-                    name="password"
-                    type="password"
-                    className="text-input"
-                    placeholder="Password"
-                  />
-                  <ErrorMessage
-                    name="password"
-                    component="div"
-                    className="text-red-500 text-xs"
-                  />
-                </div>
+              <div className="space-y-1">
+                <Input name="firstName" type="text" placeholder="First name" />
+                <Input name="lastName" type="text" placeholder="Last name" />
+                <Input name="email" type="email" placeholder="Email address" />
+                <Input name="password" type="password" placeholder="Password" />
               </div>
 
-              <div>
+              <div className="flex items-center justify-between">
                 <Button type="submit" disabled={isSubmitting}>
                   Sign up
                 </Button>
+
+                <Link to="/sign-in" className="router-link">
+                  Sign in
+                </Link>
               </div>
             </Form>
           )}

@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
+import { Formik, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { LoginRequest } from "@/helpers/types";
 import { Button } from "@/components/ui";
 import useLogin from "@/hooks/useLogin";
+import Input from "@/components/ui/Input";
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -48,33 +49,9 @@ export default function SignIn() {
         >
           {({ isSubmitting }) => (
             <Form className="mt-8 space-y-6">
-              <div className="space-y-3">
-                <div>
-                  <Field
-                    name="email"
-                    type="email"
-                    className="text-input"
-                    placeholder="Email address"
-                  />
-                  <ErrorMessage
-                    name="email"
-                    component="div"
-                    className="text-red-500 text-xs"
-                  />
-                </div>
-                <div>
-                  <Field
-                    name="password"
-                    type="password"
-                    className="text-input"
-                    placeholder="Password"
-                  />
-                  <ErrorMessage
-                    name="password"
-                    component="div"
-                    className="text-red-500 text-xs"
-                  />
-                </div>
+              <div className="space-y-1">
+                <Input name="email" type="email" placeholder="Email address" />
+                <Input name="password" type="password" placeholder="Password" />
               </div>
 
               <div className="flex items-center justify-between">

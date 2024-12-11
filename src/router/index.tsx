@@ -1,6 +1,6 @@
 import { createBrowserRouter, redirect } from "react-router-dom";
 import { store } from "@/store";
-import { api } from "@/services/api";
+import { todosApi } from "@/services/api/modules/todos";
 import { setTodos } from "@/store/todos.slice";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Board from "@/views/Board";
@@ -10,7 +10,9 @@ import CommonLayout from "@/layouts/CommonLayout";
 import Profile from "@/views/Profile";
 
 const mainPageLoader = async () => {
-  const result = await store.dispatch(api.endpoints.getTodos.initiate());
+  if (!store.getState().auth.loggedUserId) return null;
+
+  const result = await store.dispatch(todosApi.endpoints.getTodos.initiate());
   store.dispatch(setTodos(result.data));
   return null;
 };

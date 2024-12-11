@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { todosSliceReducer } from "./todos.slice.ts";
 import { authSliceReducer } from "./auth.slice.ts";
 
-import { api } from "@/services/api.ts";
+import { api } from "@/services/api";
 
 export const store = configureStore({
   reducer: {
@@ -13,7 +13,9 @@ export const store = configureStore({
     [api.reducerPath]: api.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware),
+    getDefaultMiddleware({ thunk: { extraArgument: "test" } }).concat(
+      api.middleware
+    ),
   devTools: true,
 });
 

@@ -1,5 +1,5 @@
 import { LoginRequest } from "@/helpers/types";
-import { useLoginMutation } from "@/services/api";
+import { useLoginMutation } from "@/services/api/modules/auth";
 import { useAppDispatch } from "@/store";
 import { setTokens } from "@/store/auth.slice";
 import { useNavigate } from "react-router-dom";

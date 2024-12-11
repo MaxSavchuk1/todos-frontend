@@ -11,7 +11,7 @@ export type AuthState = {
 const initialState: AuthState = {
   accessToken: localStorage.getItem("accessToken"),
   refreshToken: localStorage.getItem("refreshToken"),
-  loggedUserId: null,
+  loggedUserId: parseToken(localStorage.getItem("accessToken") || "")?.sub,
 };
 
 const authSlice = createSlice({

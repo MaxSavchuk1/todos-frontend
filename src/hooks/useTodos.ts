@@ -9,12 +9,12 @@ import {
 } from "@/store/todos.slice";
 import useCustomSelector from "./useCustomSelector";
 import {
-  api,
+  todosApi,
   useCreateTodoMutation,
   useDeleteTodoMutation,
   useLazyGetTodoByIdQuery,
   useUpdateTodoMutation,
-} from "@/services/api";
+} from "@/services/api/modules/todos";
 
 const useTodos = () => {
   const dispatch = useAppDispatch();
@@ -44,7 +44,7 @@ const useTodos = () => {
   );
 
   const fetchTodos = useCallback(async () => {
-    const result = await dispatch(api.endpoints.getTodos.initiate());
+    const result = await dispatch(todosApi.endpoints.getTodos.initiate());
     dispatch(setTodosAction(result.data));
   }, [dispatch]);
 
