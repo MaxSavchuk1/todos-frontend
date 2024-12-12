@@ -130,7 +130,7 @@ export default function Profile() {
                   </>
                 ) : (
                   <>
-                    <Button type="submit" disabled className="hidden">
+                    <Button type="submit" disabled className="!hidden">
                       Save
                     </Button>
                     <Button onClick={() => setIsEditing(true)}>
