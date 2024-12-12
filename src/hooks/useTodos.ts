@@ -2,7 +2,6 @@ import { useCallback } from "react";
 import { useAppDispatch } from "@/store";
 import {
   setShowModal as setShowModalAction,
-  setTodos as setTodosAction,
   pushToIdsStack as pushToIdsStackAction,
   removeFromIdsStack as removeFromIdsStackAction,
   clearTodosIdsStack as clearTodosIdsStackAction,
@@ -44,8 +43,7 @@ const useTodos = () => {
   );
 
   const fetchTodos = useCallback(async () => {
-    const result = await dispatch(todosApi.endpoints.getTodos.initiate());
-    dispatch(setTodosAction(result.data));
+    await dispatch(todosApi.endpoints.getTodos.initiate());
   }, [dispatch]);
 
   return {

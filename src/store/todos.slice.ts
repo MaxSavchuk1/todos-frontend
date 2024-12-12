@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { Todo } from "@/helpers/types";
+import { todosApi } from "@/services/api/modules/todos";
 
 export type TodosState = {
   todos: Todo[];
@@ -38,6 +39,14 @@ const todosSlice = createSlice({
     clearTodos: (state) => {
       state.todos = [];
     },
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      todosApi.endpoints.getTodos.matchFulfilled,
+      (state, action) => {
+        state.todos = action.payload;
+      }
+    );
   },
 });
 
