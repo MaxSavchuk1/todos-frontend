@@ -1,4 +1,4 @@
-import { LoginRequest, TokensResponse, UserProfile } from "@/helpers/types";
+import { LoginRequest, TokensResponse, User } from "@/helpers/types";
 import { api } from "../index";
 
 export const authApi = api.injectEndpoints({
@@ -10,7 +10,7 @@ export const authApi = api.injectEndpoints({
         body,
       }),
     }),
-    getProfile: builder.query<UserProfile & { id: number }, void>({
+    getProfile: builder.query<User, void>({
       query: () => "/auth/me",
       providesTags: ["User"],
     }),

@@ -1,4 +1,4 @@
-import { SignUpRequest, UserProfile } from "@/helpers/types";
+import { SignUpRequest, User } from "@/helpers/types";
 import { api } from "../index";
 import { omit } from "lodash";
 
@@ -11,7 +11,7 @@ export const usersApi = api.injectEndpoints({
         body,
       }),
     }),
-    updateProfile: builder.mutation<void, UserProfile & { id: number }>({
+    updateProfile: builder.mutation<void, User>({
       query: (data) => ({
         url: `/user/${data.id}`,
         method: "PATCH",

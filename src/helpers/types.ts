@@ -39,3 +39,7 @@ export type UserProfile = {
   lastName: string;
   email: string;
 };
+
+export type User = UserProfile & {
+  id: number;
+};

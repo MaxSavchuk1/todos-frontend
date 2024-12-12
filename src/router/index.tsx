@@ -1,21 +1,28 @@
+import { lazy } from "react";
 import { createBrowserRouter, redirect } from "react-router-dom";
 import { store } from "@/store";
 import { todosApi } from "@/services/api/modules/todos";
-import { setTodos } from "@/store/todos.slice";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import Board from "@/views/Board";
-import SignIn from "@/views/SignIn";
-import SignUp from "@/views/SignUp";
 import CommonLayout from "@/layouts/CommonLayout";
-import Profile from "@/views/Profile";
+import TestPage from "@/views/TestPage";
+import { authApi } from "@/services/api/modules/auth";
 
 const mainPageLoader = async () => {
   if (!store.getState().auth.loggedUserId) return null;
 
-  const result = await store.dispatch(todosApi.endpoints.getTodos.initiate());
-  store.dispatch(setTodos(result.data));
+  await Promise.all([
+    store.dispatch(todosApi.endpoints.getTodos.initiate()),
+    store.dispatch(authApi.endpoints.getProfile.initiate()),
+  ]);
+
   return null;
 };
+
+const Board = lazy(() => import("@/views/Board"));
+const Profile = lazy(() => import("@/views/Profile"));
+const SignIn = lazy(() => import("@/views/SignIn"));
+const SignUp = lazy(() => import("@/views/SignUp"));
+const ErrorPage = lazy(() => import("@/views/ErrorPage"));
 
 export const router = createBrowserRouter([
   {
@@ -25,7 +32,7 @@ export const router = createBrowserRouter([
         <CommonLayout />
       </ProtectedRoute>
     ),
-    // HydrateFallback: null,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -49,5 +56,9 @@ export const router = createBrowserRouter([
   {
     path: "sign-up",
     element: <SignUp />,
+  },
+  {
+    path: "test",
+    element: <TestPage />,
   },
 ]);
