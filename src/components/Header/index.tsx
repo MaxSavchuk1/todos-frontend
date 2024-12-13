@@ -3,22 +3,20 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useAppDispatch } from "@/store";
 import { clearTokens } from "@/store/auth.slice";
-import { clearTodos } from "@/store/todos.slice";
-import { clearUser } from "@/store/user.slice";
-import useCustomSelector from "@/hooks/useCustomSelector";
 import styles from "./styles.module.css";
+import { api } from "@/services/api";
+import { useGetProfileQuery } from "@/services/api/modules/auth";
 
 export default function Header() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const user = useCustomSelector((state) => state.user.user);
+  const { data: user } = useGetProfileQuery();
 
   const logOut = () => {
+    dispatch(api.util.resetApiState());
     dispatch(clearTokens());
-    dispatch(clearTodos());
-    dispatch(clearUser());
-    navigate("/sing-in");
+    navigate("/sign-in");
   };
 
   return (

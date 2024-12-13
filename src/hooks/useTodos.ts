@@ -8,18 +8,23 @@ import {
 } from "@/store/todos.slice";
 import useCustomSelector from "./useCustomSelector";
 import {
-  todosApi,
+  useGetTodosQuery,
   useCreateTodoMutation,
   useDeleteTodoMutation,
   useLazyGetTodoByIdQuery,
+  useLazyGetTodosQuery,
   useUpdateTodoMutation,
 } from "@/services/api/modules/todos";
 
 const useTodos = () => {
   const dispatch = useAppDispatch();
+  const [fetchTodos] = useLazyGetTodosQuery();
+  const { data: todos } = useGetTodosQuery();
+  const [createTodo] = useCreateTodoMutation();
+  const [updateTodo] = useUpdateTodoMutation();
+  const [deleteTodo] = useDeleteTodoMutation();
 
   const showModal = useCustomSelector((state) => state.todos.showModal);
-  const todos = useCustomSelector((state) => state.todos.todos);
   const todosIdsStack = useCustomSelector((state) => state.todos.todosIdsStack);
 
   const setShowModal = useCallback(
@@ -42,13 +47,9 @@ const useTodos = () => {
     [dispatch]
   );
 
-  const fetchTodos = useCallback(async () => {
-    await dispatch(todosApi.endpoints.getTodos.initiate());
-  }, [dispatch]);
-
   return {
-    showModal,
     todos,
+    showModal,
     todosIdsStack,
 
     setShowModal,
@@ -58,10 +59,10 @@ const useTodos = () => {
 
     fetchTodos,
 
-    useCreateTodoMutation,
-    useDeleteTodoMutation,
+    createTodo,
+    updateTodo,
+    deleteTodo,
     useLazyGetTodoByIdQuery,
-    useUpdateTodoMutation,
   };
 };
 

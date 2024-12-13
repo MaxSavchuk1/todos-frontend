@@ -22,28 +22,27 @@ export default function TodoDialog() {
   const {
     showModal,
     todosIdsStack,
-    setShowModal,
     fetchTodos,
+    createTodo,
+    updateTodo,
+    deleteTodo,
+    setShowModal,
     removeFromIdsStack,
     clearTodosIdsStack,
-    useCreateTodoMutation,
-    useDeleteTodoMutation,
     useLazyGetTodoByIdQuery,
-    useUpdateTodoMutation,
   } = useTodos();
-  const [trigger, { data: currentTodo, reset }] = useLazyGetTodoByIdQuery();
-  const [createTodo] = useCreateTodoMutation();
-  const [updateTodo] = useUpdateTodoMutation();
-  const [deleteTodo] = useDeleteTodoMutation();
+
+  const [fetchTodoById, { data: currentTodo, reset }] =
+    useLazyGetTodoByIdQuery();
 
   const currentId = todosIdsStack.at(-1);
 
   const [isEdit, setIsEdit] = useState(false);
   const [formValues, setFormValues] = useState(initialFormValues);
 
-  const successHandler = (message = "Success!") => {
+  const successHandler = async (message = "Success!") => {
     notify(message, "success");
-    fetchTodos();
+    await fetchTodos();
   };
 
   const handleSubmit = async (values: FormValues) => {
@@ -58,7 +57,7 @@ export default function TodoDialog() {
         await updateTodo({ id: currentTodo.id, data: values }).unwrap();
       }
       if (currentId) {
-        await trigger(currentId);
+        await fetchTodoById(currentId);
         await fetchTodos();
       } else {
         successHandler();
@@ -126,8 +125,8 @@ export default function TodoDialog() {
   }, [currentTodo]);
 
   useEffect(() => {
-    currentId && trigger(currentId);
-  }, [currentId, trigger]);
+    currentId && fetchTodoById(currentId);
+  }, [currentId, fetchTodoById]);
 
   useEffect(() => {
     if (!currentTodo) {

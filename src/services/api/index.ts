@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { isString } from "lodash";
 import notify from "@/services/notify";
-import { AppState } from "@/store";
 import { setTokens, clearTokens } from "@/store/auth.slice.ts";
-import { TokensResponse } from "@/helpers/types";
 import { router } from "@/router";
+import type { TokensResponse } from "@/helpers/types";
+import type { AppState } from "@/store";
 
 const baseUrl = "http://localhost:4000/api";
 
@@ -47,6 +47,7 @@ const baseQueryWithRefresh = async (args: any, api: any, extraOptions: any) => {
         } else {
           notify("Session expired", "error");
           api.dispatch(clearTokens());
+          api.dispatch(api.util.resetApiState());
           router.navigate("/sign-in");
         }
       }

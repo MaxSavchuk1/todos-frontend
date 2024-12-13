@@ -6,3 +6,9 @@ export const REQUEST_STATUTES = {
   RESOLVED: "resolved",
   REJECTED: "rejected",
 } as const;
+
+export const routes = [
+  { path: "/", label: "Home", canAccess: ["*"] },
+  { path: "/board", label: "Board", canAccess: ["user"] },
+  { path: "/users", label: "Users", canAccess: ["admin"] },
+];

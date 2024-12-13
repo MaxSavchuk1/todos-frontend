@@ -37,6 +37,7 @@ export const todosApi = api.injectEndpoints({
 });
 
 export const {
+  useGetTodosQuery,
   useLazyGetTodosQuery,
   useLazyGetTodoByIdQuery,
   useCreateTodoMutation,

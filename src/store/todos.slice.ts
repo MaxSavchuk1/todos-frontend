@@ -1,15 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { Todo } from "@/helpers/types";
-import { todosApi } from "@/services/api/modules/todos";
 
 export type TodosState = {
-  todos: Todo[];
   showModal: boolean;
   todosIdsStack: number[];
 };
 
 const initialState: TodosState = {
-  todos: [],
   showModal: false,
   todosIdsStack: [],
 };
@@ -33,20 +29,6 @@ const todosSlice = createSlice({
     clearTodosIdsStack: (state) => {
       state.todosIdsStack = [];
     },
-    setTodos: (state, action) => {
-      state.todos = action.payload;
-    },
-    clearTodos: (state) => {
-      state.todos = [];
-    },
-  },
-  extraReducers: (builder) => {
-    builder.addMatcher(
-      todosApi.endpoints.getTodos.matchFulfilled,
-      (state, action) => {
-        state.todos = action.payload;
-      }
-    );
   },
 });
 
@@ -55,8 +37,6 @@ export const {
   pushToIdsStack,
   removeFromIdsStack,
   clearTodosIdsStack,
-  setTodos,
-  clearTodos,
 } = todosSlice.actions;
 
 export const todosSliceReducer = todosSlice.reducer;

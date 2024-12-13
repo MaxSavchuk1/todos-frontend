@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import styles from "./styles.module.css";
+import { memo } from "react";
 
 type Props = {
   type?: "button" | "submit" | "reset";
@@ -10,7 +11,7 @@ type Props = {
   disabled?: boolean;
 };
 
-export default function Button({
+function Button({
   type = "button",
   onClick = () => {},
   styleType = "primary",
@@ -34,3 +35,5 @@ export default function Button({
     </button>
   );
 }
+
+export default memo(Button);

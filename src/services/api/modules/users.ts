@@ -1,25 +1,33 @@
-import { SignUpRequest, User } from "@/helpers/types";
+import { FindQuery, SignUpRequest, User } from "@/helpers/types";
 import { api } from "../index";
-import { omit } from "lodash";
+import { pick } from "lodash";
 
 export const usersApi = api.injectEndpoints({
   endpoints: (builder) => ({
     signup: builder.mutation<void, SignUpRequest>({
       query: (body) => ({
-        url: "/user/create",
+        url: "/users/create",
         method: "POST",
         body,
       }),
     }),
-    updateProfile: builder.mutation<void, User>({
+    updateProfile: builder.mutation<void, Partial<User>>({
       query: (data) => ({
-        url: `/user/${data.id}`,
+        url: `/users/${data.id}`,
         method: "PATCH",
-        body: omit(data, "id", "email"),
+        body: pick(data, "firstName", "lastName"),
       }),
       invalidatesTags: ["User"],
+    }),
+    getAllUsers: builder.query<{ results: User[]; total: number }, FindQuery>({
+      query: ({ limit, offset }: FindQuery) =>
+        `/users?limit=${limit}&offset=${offset}`,
     }),
   }),
 });
 
-export const { useSignupMutation, useUpdateProfileMutation } = usersApi;
+export const {
+  useSignupMutation,
+  useUpdateProfileMutation,
+  useGetAllUsersQuery,
+} = usersApi;

@@ -53,7 +53,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+    <div className={styles.container}>
       <h1 className="text-2xl font-bold mb-6">User Profile</h1>
       <Formik
         initialValues={formValues}

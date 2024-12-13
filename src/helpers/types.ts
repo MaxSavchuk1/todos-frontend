@@ -34,6 +34,11 @@ export type TokensResponse = {
   refresh_token: string;
 };
 
+export enum Role {
+  User = "user",
+  Admin = "admin",
+}
+
 export type UserProfile = {
   firstName: string;
   lastName: string;
@@ -42,4 +47,11 @@ export type UserProfile = {
 
 export type User = UserProfile & {
   id: number;
+  roles: Role[];
+  createdAt: string;
+};
+
+export type FindQuery = {
+  limit: number;
+  offset: number;
 };

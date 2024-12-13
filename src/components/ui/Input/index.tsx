@@ -1,5 +1,6 @@
 import { InputEvent } from "@/helpers/types";
 import { ErrorMessage, Field, useFormikContext } from "formik";
+import { memo } from "react";
 
 type Props = {
   id?: string;
@@ -9,13 +10,7 @@ type Props = {
   disabled?: boolean;
 };
 
-export default function Input({
-  name,
-  type,
-  placeholder = "",
-  id,
-  disabled = false,
-}: Props) {
+function Input({ name, type, placeholder = "", id, disabled = false }: Props) {
   const { setFieldValue } = useFormikContext<Record<string, string>>();
   const onChange = (e: InputEvent) => {
     setFieldValue(name, e.target.value);
@@ -42,3 +37,5 @@ export default function Input({
     </>
   );
 }
+
+export default memo(Input);

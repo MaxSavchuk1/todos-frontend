@@ -9,8 +9,7 @@ import type { TodoStatus, Todo } from "@/helpers/types";
 type GroupedTodos = Record<TodoStatus, Todo[] | undefined>;
 
 export default function TodosContainer() {
-  const { setShowModal, todos, useUpdateTodoMutation, fetchTodos } = useTodos();
-  const [updateTodo] = useUpdateTodoMutation();
+  const { setShowModal, updateTodo, fetchTodos, todos } = useTodos();
 
   const draggedTodoId = useRef<string | null>(null);
 
@@ -46,7 +45,7 @@ export default function TodosContainer() {
   };
 
   return (
-    <div className="flex gap-3 h-full">
+    <div className="flex gap-3 min-h-full">
       {STATUSES.map((status) => (
         <div
           id={status.replace(" ", "_")}
