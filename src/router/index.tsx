@@ -8,7 +8,7 @@ import TestPage from "@/views/TestPage";
 import { authApi } from "@/services/api/modules/auth";
 
 const mainPageLoader = async () => {
-  if (!store.getState().auth.loggedUserId) return null;
+  if (!store.getState().auth.accessToken) return null;
 
   await Promise.all([
     store.dispatch(todosApi.endpoints.getTodos.initiate()),
