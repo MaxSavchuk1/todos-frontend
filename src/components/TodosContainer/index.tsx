@@ -45,7 +45,7 @@ export default function TodosContainer() {
   };
 
   return (
-    <div className="flex gap-3 min-h-full">
+    <div className="flex gap-3 min-h-full pt-2">
       {STATUSES.map((status) => (
         <div
           id={status.replace(" ", "_")}

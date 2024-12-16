@@ -1,9 +1,10 @@
+import { parseToken } from "@/helpers";
 import { Role } from "@/helpers/types";
-import { useGetProfileQuery } from "@/services/api/modules/auth";
+import useCustomSelector from "./useCustomSelector";
 
-const useRoles = (trigger?: string) => {
-  const { data: user } = useGetProfileQuery();
-  trigger && console.log(trigger);
+const useAuth = () => {
+  const accessToken = useCustomSelector((state) => state.auth.accessToken);
+  const user = parseToken(accessToken);
 
   const userRoles = user?.roles || [];
   const isAdmin = userRoles.includes(Role.Admin);
@@ -18,6 +19,7 @@ const useRoles = (trigger?: string) => {
   };
 
   return {
+    isAuthenticated: !!accessToken,
     isAdmin,
     isUser,
     userRoles,
@@ -25,4 +27,4 @@ const useRoles = (trigger?: string) => {
   };
 };
 
-export default useRoles;
+export default useAuth;

@@ -6,6 +6,7 @@ import { clearTokens } from "@/store/auth.slice";
 import styles from "./styles.module.css";
 import { api } from "@/services/api";
 import { useGetProfileQuery } from "@/services/api/modules/auth";
+import { ROUTES } from "@/constants";
 
 export default function Header() {
   const dispatch = useAppDispatch();
@@ -16,12 +17,12 @@ export default function Header() {
   const logOut = () => {
     dispatch(api.util.resetApiState());
     dispatch(clearTokens());
-    navigate("/sign-in");
+    navigate(ROUTES.SIGN_IN);
   };
 
   return (
     <header className={styles.container}>
-      <h1 className={styles.logo} onClick={() => navigate("/")}>
+      <h1 className={styles.logo} onClick={() => navigate(ROUTES.HOME)}>
         Jeera 🤪
       </h1>
 

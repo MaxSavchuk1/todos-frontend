@@ -55,3 +55,9 @@ export type FindQuery = {
   limit: number;
   offset: number;
 };
+
+export type ChangePasswordRequest = {
+  oldPassword: string;
+  password: string;
+  passwordConfirmation: string;
+};

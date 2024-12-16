@@ -1,18 +1,13 @@
 import { Formik, Form, FormikHelpers } from "formik";
-import * as Yup from "yup";
 import { useSignupMutation } from "@/services/api/modules/users";
 import { SignUpRequest } from "@/helpers/types";
 import { Button } from "@/components/ui";
 import useLogin from "@/hooks/useLogin";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Input from "@/components/ui/Input";
-
-const SignUpSchema = Yup.object().shape({
-  firstName: Yup.string().required("Required"),
-  lastName: Yup.string().required("Required"),
-  email: Yup.string().email("Invalid email").required("Required"),
-  password: Yup.string().min(6, "Too Short!").required("Required"),
-});
+import useAuth from "@/hooks/useAuth";
+import { ROUTES } from "@/constants";
+import { signUpValidationSchema } from "@/helpers/validationSchemes";
 
 const initialValues: SignUpRequest = {
   firstName: "",
@@ -24,6 +19,11 @@ const initialValues: SignUpRequest = {
 export default function SignUp() {
   const [signup] = useSignupMutation();
   const { loginRequest } = useLogin();
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated) {
+    return <Navigate to={ROUTES.HOME} replace />;
+  }
 
   const submitHandler = async (
     values: SignUpRequest,
@@ -51,7 +51,7 @@ export default function SignUp() {
         </h2>
         <Formik
           initialValues={initialValues}
-          validationSchema={SignUpSchema}
+          validationSchema={signUpValidationSchema}
           onSubmit={submitHandler}
         >
           {({ isSubmitting }) => (

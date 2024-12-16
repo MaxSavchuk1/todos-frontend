@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Formik, Form, FormikHelpers } from "formik";
-import * as Yup from "yup";
 import { Button } from "@/components/ui";
 import { useUpdateProfileMutation } from "@/services/api/modules/users";
 import { useGetProfileQuery } from "@/services/api/modules/auth";
 import { UserProfile } from "@/helpers/types";
 import styles from "./styles.module.css";
 import Input from "@/components/ui/Input";
+import { profileValidationSchema } from "@/helpers/validationSchemes";
 
 const initialFormValues: UserProfile = {
   firstName: "",
@@ -14,15 +14,7 @@ const initialFormValues: UserProfile = {
   email: "",
 };
 
-const validationSchema = Yup.object({
-  firstName: Yup.string().required("First name is required"),
-  lastName: Yup.string().required("Last name is required"),
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
-});
-
-export default function Profile() {
+export default function PasswordChange() {
   const { data: userData } = useGetProfileQuery();
   const [updateProfile] = useUpdateProfileMutation();
 
@@ -57,7 +49,7 @@ export default function Profile() {
       <h1 className="text-2xl font-bold mb-6">User Profile</h1>
       <Formik
         initialValues={formValues}
-        validationSchema={validationSchema}
+        validationSchema={profileValidationSchema}
         onSubmit={handleSubmit}
         enableReinitialize
       >

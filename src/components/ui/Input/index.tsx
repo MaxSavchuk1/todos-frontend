@@ -1,6 +1,7 @@
 import { InputEvent } from "@/helpers/types";
 import { ErrorMessage, Field, useFormikContext } from "formik";
-import { memo } from "react";
+import { memo, useState } from "react";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
 
 type Props = {
   id?: string;
@@ -11,6 +12,7 @@ type Props = {
 };
 
 function Input({ name, type, placeholder = "", id, disabled = false }: Props) {
+  const [currentType, setCurrentType] = useState(type);
   const { setFieldValue } = useFormikContext<Record<string, string>>();
   const onChange = (e: InputEvent) => {
     setFieldValue(name, e.target.value);
@@ -22,7 +24,7 @@ function Input({ name, type, placeholder = "", id, disabled = false }: Props) {
         <Field
           id={id}
           name={name}
-          type={type}
+          type={currentType}
           placeholder={placeholder}
           className="text-input"
           onChange={onChange}
@@ -33,6 +35,22 @@ function Input({ name, type, placeholder = "", id, disabled = false }: Props) {
           component="div"
           className="field-error absolute bottom-0"
         />
+        {type === "password" && (
+          <button
+            type="button"
+            onClick={() =>
+              setCurrentType(currentType === "password" ? "text" : "password")
+            }
+            className="absolute right-3 top-2.5"
+          >
+            {currentType === "text" && (
+              <EyeSlashIcon aria-hidden="true" className="w-5 h-5" />
+            )}
+            {currentType === "password" && (
+              <EyeIcon aria-hidden="true" className="w-5 h-5" />
+            )}
+          </button>
+        )}
       </div>
     </>
   );

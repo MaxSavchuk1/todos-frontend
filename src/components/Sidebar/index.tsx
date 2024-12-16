@@ -2,11 +2,11 @@ import { Link, useLocation } from "react-router-dom";
 import clsx from "clsx";
 import Userbar from "./user-bar";
 import styles from "./styles.module.css";
-import useRoles from "@/hooks/useRoles";
-import { routes } from "@/constants";
+import useAuth from "@/hooks/useAuth";
+import { sidebarLinks } from "@/constants";
 
 export default function Sidebar() {
-  const { check } = useRoles();
+  const { check } = useAuth();
   const { pathname } = useLocation();
 
   const isCurrentRoute = (route: string) => pathname === route;
@@ -16,17 +16,15 @@ export default function Sidebar() {
       <h1 className={styles.logo}>Jeera 🤪</h1>
 
       <div className={styles.links}>
-        {routes
-          .filter((route) => check(route.canAccess))
-          .map((route) => (
+        {sidebarLinks
+          .filter((link) => check(link.canAccess))
+          .map((link) => (
             <Link
-              key={route.path}
-              to={route.path}
-              className={clsx(
-                isCurrentRoute(route.path) && styles.currentRoute
-              )}
+              key={link.path}
+              to={link.path}
+              className={clsx(isCurrentRoute(link.path) && styles.currentRoute)}
             >
-              {route.label}
+              {link.label}
             </Link>
           ))}
       </div>

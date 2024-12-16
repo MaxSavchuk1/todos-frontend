@@ -1,15 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Formik, Form, FormikHelpers } from "formik";
-import * as Yup from "yup";
 import { LoginRequest } from "@/helpers/types";
 import { Button } from "@/components/ui";
 import useLogin from "@/hooks/useLogin";
 import Input from "@/components/ui/Input";
-
-const SignInSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Required"),
-  password: Yup.string().required("Required").min(6, "Minimum 6 characters"),
-});
+import useAuth from "@/hooks/useAuth";
+import { ROUTES } from "@/constants";
+import { signInValidationSchema } from "@/helpers/validationSchemes";
 
 const initialValues: LoginRequest = {
   email: "",
@@ -18,6 +15,11 @@ const initialValues: LoginRequest = {
 
 export default function SignIn() {
   const { loginRequest } = useLogin();
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated) {
+    return <Navigate to={ROUTES.HOME} replace />;
+  }
 
   const submitHandler = async (
     values: LoginRequest,
@@ -44,7 +46,7 @@ export default function SignIn() {
         </h2>
         <Formik
           initialValues={initialValues}
-          validationSchema={SignInSchema}
+          validationSchema={signInValidationSchema}
           onSubmit={submitHandler}
         >
           {({ isSubmitting }) => (

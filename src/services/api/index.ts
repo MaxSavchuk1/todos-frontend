@@ -5,6 +5,7 @@ import { setTokens, clearTokens } from "@/store/auth.slice.ts";
 import { router } from "@/router";
 import type { TokensResponse } from "@/helpers/types";
 import type { AppState } from "@/store";
+import { ROUTES } from "@/constants";
 
 const baseUrl = "http://localhost:4000/api";
 
@@ -48,7 +49,7 @@ const baseQueryWithRefresh = async (args: any, api: any, extraOptions: any) => {
           notify("Session expired", "error");
           api.dispatch(clearTokens());
           api.dispatch(api.util.resetApiState());
-          router.navigate("/sign-in");
+          router.navigate(ROUTES.SIGN_IN);
         }
       }
     } else {

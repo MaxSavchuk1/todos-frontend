@@ -1,44 +1,44 @@
 import { Navigate, useLocation } from "react-router-dom";
-import useCustomSelector from "@/hooks/useCustomSelector";
-import useRoles from "@/hooks/useRoles";
 import { memo } from "react";
+import useCustomSelector from "@/hooks/useCustomSelector";
+import useAuth from "@/hooks/useAuth";
+import { ROUTES } from "@/constants";
 
+type useAuthReturnType = ReturnType<typeof useAuth>;
 type Props = {
   children: React.ReactNode;
 };
 
-type useRolesReturnType = ReturnType<typeof useRoles>;
+const userRoutes = [ROUTES.BOARD];
 
-const userRoutes = ["/board"];
-
-const adminRoutes = ["/users"];
+const adminRoutes = [ROUTES.USERS];
 
 const checkPrivateRoutes = (
   children: Props["children"],
-  { isAdmin, isUser }: useRolesReturnType,
+  { isAdmin, isUser }: useAuthReturnType,
   pathname: string
 ) => {
   if (!isAdmin && adminRoutes.includes(pathname)) {
-    return <Navigate to="/" />;
+    return <Navigate to={ROUTES.HOME} />;
   }
 
   if (!isUser && userRoutes.includes(pathname)) {
-    return <Navigate to="/" />;
+    return <Navigate to={ROUTES.HOME} />;
   }
 
   return children;
 };
 
 function ProtectedRoute({ children }: Props) {
-  const useRolesHook = useRoles();
   const { pathname } = useLocation();
   const accessToken = useCustomSelector((state) => state.auth.accessToken);
+  const useAuthHook = useAuth();
 
   if (!accessToken) {
-    return <Navigate to="/sign-in" replace />;
+    return <Navigate to={ROUTES.SIGN_IN} replace />;
   }
 
-  return checkPrivateRoutes(children, useRolesHook, pathname);
+  return checkPrivateRoutes(children, useAuthHook, pathname);
 }
 
 export default memo(ProtectedRoute);

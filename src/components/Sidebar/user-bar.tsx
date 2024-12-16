@@ -1,22 +1,22 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/store";
 import { useGetProfileQuery } from "@/services/api/modules/auth";
 import { api } from "@/services/api";
 import { clearTokens } from "@/store/auth.slice";
 import styles from "./styles.module.css";
+import { ROUTES } from "@/constants";
 
 export default function Userbar() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { pathname } = useLocation();
   const { data: user } = useGetProfileQuery();
 
   const logOut = () => {
     dispatch(api.util.resetApiState());
     dispatch(clearTokens());
-    navigate("/sign-in");
+    navigate(ROUTES.SIGN_IN);
   };
 
   return (
@@ -40,13 +40,19 @@ export default function Userbar() {
       </MenuButton>
 
       <MenuItems transition anchor="top" className={styles.dropdown}>
-        {pathname !== "/profile" && (
-          <MenuItem>
-            <Link to="/profile" className="router-link">
-              Your profile
-            </Link>
-          </MenuItem>
-        )}
+        <MenuItem>
+          <Link to={ROUTES.PROFILE} className="router-link">
+            Your profile
+          </Link>
+        </MenuItem>
+
+        <MenuItem>
+          <Link to={ROUTES.CHANGE_PASSWORD} className="router-link">
+            Change password
+          </Link>
+        </MenuItem>
+
+        <div className="my-2 border-b border-b-gray-600"></div>
 
         <MenuItem>
           <div onClick={logOut} className={styles.logOut}>
