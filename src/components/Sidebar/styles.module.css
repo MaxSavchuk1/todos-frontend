@@ -24,7 +24,7 @@
 }
 
 .link {
-  @apply p-2 rounded w-full block leading-3 bg-neutral-300;
+  @apply p-2 rounded w-full block leading-3 bg-neutral-200;
 }
 
 .links > a {

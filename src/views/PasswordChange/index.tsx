@@ -45,7 +45,7 @@ export default function Profile() {
 
   return (
     <div className={styles.container}>
-      <h1 className="text-2xl font-bold mb-6">User Profile</h1>
+      <h1 className="text-2xl font-bold mb-6">Password change</h1>
       <Formik
         initialValues={initialFormValues}
         validationSchema={passwordChangeValidationSchema}
