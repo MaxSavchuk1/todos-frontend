@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import styles from "./styles.module.css";
+import { memo } from "react";
 
 type Props = {
   type?: "button" | "submit" | "reset";
@@ -7,19 +8,22 @@ type Props = {
   styleType?: "primary" | "danger";
   className?: string;
   children: React.ReactNode;
+  disabled?: boolean;
 };
 
-export default function Button({
+function Button({
   type = "button",
   onClick = () => {},
   styleType = "primary",
   className = "",
+  disabled = false,
   children,
 }: Props) {
   return (
     <button
       type={type}
       onClick={onClick}
+      disabled={disabled}
       className={clsx(
         styles.buttonMain,
         styleType === "primary" && styles.primary,
@@ -31,3 +35,5 @@ export default function Button({
     </button>
   );
 }
+
+export default memo(Button);

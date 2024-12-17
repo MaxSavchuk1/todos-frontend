@@ -6,3 +6,19 @@ export const REQUEST_STATUTES = {
   RESOLVED: "resolved",
   REJECTED: "rejected",
 } as const;
+
+export const ROUTES = {
+  HOME: "/",
+  BOARD: "/board",
+  PROFILE: "/profile",
+  SIGN_IN: "/sign-in",
+  SIGN_UP: "/sign-up",
+  USERS: "/users",
+  CHANGE_PASSWORD: "/change-password",
+};
+
+export const sidebarLinks = [
+  { path: ROUTES.HOME, label: "Home", canAccess: ["*"] },
+  { path: ROUTES.BOARD, label: "Board", canAccess: ["user"] },
+  { path: ROUTES.USERS, label: "Users", canAccess: ["admin"] },
+];

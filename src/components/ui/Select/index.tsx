@@ -3,6 +3,7 @@ import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import clsx from "clsx";
 import type { InputEvent } from "@/helpers/types";
 import styles from "./styles.module.css";
+import { memo } from "react";
 
 type Props = {
   name: string;
@@ -46,4 +47,4 @@ const Select = ({
   );
 };
 
-export default Select;
+export default memo(Select);

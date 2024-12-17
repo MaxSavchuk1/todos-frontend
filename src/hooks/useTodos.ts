@@ -2,18 +2,29 @@ import { useCallback } from "react";
 import { useAppDispatch } from "@/store";
 import {
   setShowModal as setShowModalAction,
-  fetchTodos as fetchTodosAction,
   pushToIdsStack as pushToIdsStackAction,
   removeFromIdsStack as removeFromIdsStackAction,
   clearTodosIdsStack as clearTodosIdsStackAction,
-} from "../store/todos.slice";
+} from "@/store/todos.slice";
 import useCustomSelector from "./useCustomSelector";
+import {
+  useGetTodosQuery,
+  useCreateTodoMutation,
+  useDeleteTodoMutation,
+  useLazyGetTodoByIdQuery,
+  useLazyGetTodosQuery,
+  useUpdateTodoMutation,
+} from "@/services/api/modules/todos";
 
 const useTodos = () => {
   const dispatch = useAppDispatch();
+  const [fetchTodos] = useLazyGetTodosQuery();
+  const { data: todos } = useGetTodosQuery();
+  const [createTodo] = useCreateTodoMutation();
+  const [updateTodo] = useUpdateTodoMutation();
+  const [deleteTodo] = useDeleteTodoMutation();
 
   const showModal = useCustomSelector((state) => state.todos.showModal);
-  const todos = useCustomSelector((state) => state.todos.todos);
   const todosIdsStack = useCustomSelector((state) => state.todos.todosIdsStack);
 
   const setShowModal = useCallback(
@@ -36,21 +47,22 @@ const useTodos = () => {
     [dispatch]
   );
 
-  const fetchTodos = useCallback(
-    () => dispatch(fetchTodosAction()),
-    [dispatch]
-  );
-
   return {
-    showModal,
     todos,
+    showModal,
     todosIdsStack,
 
     setShowModal,
-    fetchTodos,
     pushToIdsStack,
     removeFromIdsStack,
     clearTodosIdsStack,
+
+    fetchTodos,
+
+    createTodo,
+    updateTodo,
+    deleteTodo,
+    useLazyGetTodoByIdQuery,
   };
 };
 
