@@ -17,11 +17,14 @@ export const usersApi = api.injectEndpoints({
         method: "PATCH",
         body: pick(data, "firstName", "lastName"),
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["CurrentUser"],
     }),
     getAllUsers: builder.query<{ results: User[]; total: number }, FindQuery>({
       query: ({ limit, offset }: FindQuery) =>
         `/users?limit=${limit}&offset=${offset}`,
+    }),
+    getUserById: builder.query<User, number>({
+      query: (id) => `/users/${id}`,
     }),
   }),
 });
@@ -30,4 +33,6 @@ export const {
   useSignupMutation,
   useUpdateProfileMutation,
   useGetAllUsersQuery,
+  useLazyGetUserByIdQuery,
+  useGetUserByIdQuery,
 } = usersApi;

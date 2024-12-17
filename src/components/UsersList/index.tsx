@@ -1,18 +1,45 @@
+import { DateTime } from "luxon";
 import { useGetAllUsersQuery } from "@/services/api/modules/users";
-import ListItem from "./list-item";
+import styles from "./styles.module.css";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/constants";
 
 export default function UsersList() {
+  const navigate = useNavigate();
   const { data } = useGetAllUsersQuery({ limit: 999, offset: 0 });
   const users = data?.results || [];
 
   return (
     <div>
       <h2 className="text-2xl my-5">Users</h2>
-      <ul className="flex flex-col gap-3">
-        {users?.map((user) => (
-          <ListItem key={user.id} user={user} />
-        ))}
-      </ul>
+
+      <table border={1} className={styles.usersTable}>
+        <thead>
+          <tr>
+            <th>First name</th>
+            <th>Last Name</th>
+            <th>Created at</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.length === 0 ? (
+            <tr>
+              <td colSpan={3}>No users</td>
+            </tr>
+          ) : (
+            users.map((user) => (
+              <tr
+                key={user.id}
+                onClick={() => navigate(`${ROUTES.USERS}/${user.id}`)}
+              >
+                <td>{user.firstName}</td>
+                <td>{user.lastName}</td>
+                <td>{DateTime.fromISO(user.createdAt).toFormat("f")}</td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
     </div>
   );
 }

@@ -17,7 +17,7 @@ export const authApi = api.injectEndpoints({
     }),
     getProfile: builder.query<User, void>({
       query: () => "/auth/me",
-      providesTags: ["User"],
+      providesTags: ["CurrentUser"],
     }),
     changePassword: builder.mutation<void, ChangePasswordRequest>({
       query: (body) => ({

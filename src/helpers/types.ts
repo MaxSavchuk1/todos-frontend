@@ -61,3 +61,8 @@ export type ChangePasswordRequest = {
   password: string;
   passwordConfirmation: string;
 };
+
+export type UpdateRolesRequest = {
+  userId: number;
+  roles: Role[];
+};

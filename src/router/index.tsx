@@ -21,6 +21,7 @@ const SignIn = lazy(() => import("@/views/SignIn"));
 const SignUp = lazy(() => import("@/views/SignUp"));
 const ErrorPage = lazy(() => import("@/views/ErrorPage"));
 const Users = lazy(() => import("@/views/Users"));
+const User = lazy(() => import("@/views/User"));
 const PasswordChange = lazy(() => import("@/views/PasswordChange"));
 
 export const router = createBrowserRouter([
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
         element: <Users />,
       },
       {
+        path: `${ROUTES.USERS}/:id`,
+        element: <User />,
+      },
+      {
         path: ROUTES.CHANGE_PASSWORD,
         element: <PasswordChange />,
       },
@@ -64,8 +69,4 @@ export const router = createBrowserRouter([
     path: ROUTES.SIGN_UP,
     element: <SignUp />,
   },
-  // {
-  //   path: "/test",
-  //   element: <TestPage />,
-  // },
 ]);

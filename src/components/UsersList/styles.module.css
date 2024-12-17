@@ -1,0 +1,15 @@
+.usersTable td {
+  @apply px-4 py-2 min-w-44;
+}
+
+.usersTable tbody tr:nth-child(odd) {
+  @apply bg-gray-100;
+}
+
+.usersTable tbody tr {
+  @apply cursor-pointer hover:bg-slate-200 text-sm;
+}
+
+.usersTable thead {
+  @apply text-sm;
+}
