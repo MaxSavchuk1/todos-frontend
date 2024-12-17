@@ -3,15 +3,23 @@ import { api } from "../index";
 
 export const rolesApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    updateRoles: builder.mutation<void, UpdateRolesRequest>({
+    addRole: builder.mutation<void, UpdateRolesRequest>({
       query: (body) => ({
-        url: `/roles/update`,
+        url: `/role/add`,
         method: "POST",
         body,
       }),
-      // invalidatesTags: ["User"],
+      invalidatesTags: ["User"],
+    }),
+    removeRole: builder.mutation<void, UpdateRolesRequest>({
+      query: (body) => ({
+        url: `/role/remove`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["User"],
     }),
   }),
 });
 
-export const { useUpdateRolesMutation } = rolesApi;
+export const { useAddRoleMutation, useRemoveRoleMutation } = rolesApi;

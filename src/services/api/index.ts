@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { isString } from "lodash";
+import { isArray, isString } from "lodash";
 import notify from "@/services/notify";
 import { setTokens, clearTokens } from "@/store/auth.slice.ts";
 import { router } from "@/router";
@@ -54,9 +54,12 @@ const baseQueryWithRefresh = async (args: any, api: any, extraOptions: any) => {
       }
     } else {
       const { message } = result.error?.data as any;
+
       if (isString(message)) {
-        // TODO
         notify(message, "error");
+      }
+      if (isArray(message)) {
+        message.forEach((m) => notify(m, "error"));
       }
     }
   }
@@ -65,6 +68,6 @@ const baseQueryWithRefresh = async (args: any, api: any, extraOptions: any) => {
 
 export const api = createApi({
   baseQuery: baseQueryWithRefresh,
-  tagTypes: ["Todos", "CurrentUser", "User"],
+  tagTypes: ["Todos", "CurrentUser", "User", "Users"],
   endpoints: () => ({}),
 });

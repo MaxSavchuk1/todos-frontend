@@ -1,7 +1,7 @@
 import {
   LoginRequest,
   TokensResponse,
-  User,
+  // User,
   ChangePasswordRequest,
 } from "@/helpers/types";
 import { api } from "../index";
@@ -15,10 +15,6 @@ export const authApi = api.injectEndpoints({
         body,
       }),
     }),
-    getProfile: builder.query<User, void>({
-      query: () => "/auth/me",
-      providesTags: ["CurrentUser"],
-    }),
     changePassword: builder.mutation<void, ChangePasswordRequest>({
       query: (body) => ({
         url: "/auth/password",
@@ -29,8 +25,4 @@ export const authApi = api.injectEndpoints({
   }),
 });
 
-export const {
-  useLoginMutation,
-  useGetProfileQuery,
-  useChangePasswordMutation,
-} = authApi;
+export const { useLoginMutation, useChangePasswordMutation } = authApi;

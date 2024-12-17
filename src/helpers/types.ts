@@ -64,5 +64,5 @@ export type ChangePasswordRequest = {
 
 export type UpdateRolesRequest = {
   userId: number;
-  roles: Role[];
+  role: Role;
 };

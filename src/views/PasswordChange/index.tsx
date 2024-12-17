@@ -14,7 +14,7 @@ const initialFormValues: ChangePasswordRequest = {
   passwordConfirmation: "",
 };
 
-export default function Profile() {
+export default function PasswordChange() {
   const [changePassword] = useChangePasswordMutation();
 
   const handleSubmit = async (

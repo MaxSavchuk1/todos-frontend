@@ -2,7 +2,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/store";
-import { useGetProfileQuery } from "@/services/api/modules/auth";
+import { useGetProfileQuery } from "@/services/api/modules/users";
 import { api } from "@/services/api";
 import { clearTokens } from "@/store/auth.slice";
 import styles from "./styles.module.css";

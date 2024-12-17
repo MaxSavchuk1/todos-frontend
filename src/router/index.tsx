@@ -3,13 +3,13 @@ import { createBrowserRouter } from "react-router-dom";
 import { store } from "@/store";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import CommonLayout from "@/layouts/CommonLayout";
-import { authApi } from "@/services/api/modules/auth";
+import { usersApi } from "@/services/api/modules/users";
 import { ROUTES } from "@/constants";
 
 const mainPageLoader = async () => {
   if (!store.getState().auth.accessToken) return null;
 
-  await store.dispatch(authApi.endpoints.getProfile.initiate());
+  await store.dispatch(usersApi.endpoints.getProfile.initiate());
 
   return null;
 };

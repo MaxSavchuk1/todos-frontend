@@ -1,0 +1,17 @@
+.pageContainer {
+  @apply pt-3;
+}
+
+.tab {
+  @apply rounded py-1 px-3 font-semibold focus:outline-none;
+  @apply data-[selected]:underline data-[selected]:underline-offset-4 data-[selected]:decoration-blue-500;
+  @apply data-[hover]:bg-blue-600/5 data-[selected]:data-[hover]:bg-blue-600/10 data-[focus]:outline-1 data-[focus]:outline-none;
+}
+
+.tabContent {
+  @apply w-full max-w-3xl h-fit mx-auto p-6;
+}
+
+.fullName {
+  @apply text-2xl font-bold mb-6;
+}

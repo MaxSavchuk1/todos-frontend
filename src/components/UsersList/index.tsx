@@ -3,11 +3,16 @@ import { useGetAllUsersQuery } from "@/services/api/modules/users";
 import styles from "./styles.module.css";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/constants";
+import Loader from "../Loader";
 
 export default function UsersList() {
   const navigate = useNavigate();
-  const { data } = useGetAllUsersQuery({ limit: 999, offset: 0 });
+  const { data, isLoading } = useGetAllUsersQuery({ limit: 999, offset: 0 });
   const users = data?.results || [];
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div>
