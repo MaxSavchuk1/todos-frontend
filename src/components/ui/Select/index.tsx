@@ -11,6 +11,7 @@ type Props = {
   optionValues: string[];
   placeholder?: string;
   className?: string;
+  disabled?: boolean;
 };
 
 const Select = ({
@@ -19,6 +20,7 @@ const Select = ({
   optionValues = [],
   placeholder = "",
   className = "",
+  disabled = false,
 }: Props) => {
   const { values, setFieldValue } = useFormikContext<Record<string, string>>();
   const defaultOnChange = (e: InputEvent) => {
@@ -30,6 +32,7 @@ const Select = ({
       <Field
         as="select"
         name={name}
+        disabled={disabled}
         className={clsx(!values[name] && "text-gray", styles.select)}
         onChange={onChange || defaultOnChange}
       >

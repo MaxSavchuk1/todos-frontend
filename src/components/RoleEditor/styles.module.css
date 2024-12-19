@@ -13,7 +13,3 @@
 .sectionItemIcon {
   @apply w-6 cursor-pointer;
 }
-
-.adminAlert {
-  @apply flex items-center gap-2 rounded bg-blue-200 p-2 text-xs mb-4;
-}
