@@ -1,4 +1,4 @@
-import { FindQuery, SignUpRequest, User } from "@/helpers/types";
+import type { FindQuery, CreateAccountRequest, User } from "@/helpers/types";
 import { api } from "../index";
 import { pick } from "lodash";
 import { AppState } from "@/store";
@@ -7,12 +7,13 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 export const usersApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    signup: builder.mutation<void, SignUpRequest>({
+    createAccount: builder.mutation<void, CreateAccountRequest>({
       query: (body) => ({
         url: "/users/create",
         method: "POST",
         body,
       }),
+      invalidatesTags: ["Users"],
     }),
     updateProfile: builder.mutation<void, Partial<User>>({
       query: (data) => ({
@@ -64,7 +65,7 @@ export const usersApi = api.injectEndpoints({
 });
 
 export const {
-  useSignupMutation,
+  useCreateAccountMutation,
   useUpdateProfileMutation,
   useDeleteUserMutation,
 

@@ -16,8 +16,6 @@ export default function UsersList() {
 
   return (
     <div>
-      <h2 className="text-2xl my-5">Users</h2>
-
       <table border={1} className={styles.usersTable}>
         <thead>
           <tr>

@@ -6,9 +6,11 @@ import UserForm from "@/components/UserForm";
 import Loader from "@/components/Loader";
 import RoleEditor from "@/components/RoleEditor";
 import styles from "./styles.module.css";
+import useAuth from "@/hooks/useAuth";
 
 function User() {
   const { id } = useParams();
+  const { isAdmin } = useAuth();
   const { data: user, isLoading } = useGetUserByIdQuery(+id!);
 
   if (isLoading) {
@@ -20,7 +22,8 @@ function User() {
       <TabGroup>
         <TabList className="bg-slate-200 flex justify-center">
           <Tab className={styles.tab}>Details</Tab>
-          <Tab className={styles.tab}>Roles</Tab>
+          <Tab className={styles.tab}>Assigned tasks</Tab>
+          {isAdmin && <Tab className={styles.tab}>Roles</Tab>}
         </TabList>
 
         <TabPanels>
@@ -35,10 +38,16 @@ function User() {
           </TabPanel>
 
           <TabPanel>
-            <div className={styles.tabContent}>
-              <RoleEditor user={user!} />
-            </div>
+            <div className={styles.tabContent}>Coming soon...</div>
           </TabPanel>
+
+          {isAdmin && (
+            <TabPanel>
+              <div className={styles.tabContent}>
+                <RoleEditor user={user!} />
+              </div>
+            </TabPanel>
+          )}
         </TabPanels>
       </TabGroup>
     </div>

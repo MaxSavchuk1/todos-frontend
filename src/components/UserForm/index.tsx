@@ -26,7 +26,7 @@ const initialFormValues: UserProfile = {
 function UserForm({ userData }: Props) {
   const [updateProfile] = useUpdateProfileMutation();
   const [deleteUser] = useDeleteUserMutation();
-  const { isAdmin } = useAuth();
+  const { isAdmin, isUserManager } = useAuth();
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -147,15 +147,16 @@ function UserForm({ userData }: Props) {
                     Save
                   </Button>
 
-                  {isAdmin && pathname !== ROUTES.PROFILE && (
-                    <Button
-                      styleType="danger"
-                      className="mr-auto"
-                      onClick={deleteUserHandler}
-                    >
-                      Delete user
-                    </Button>
-                  )}
+                  {(isAdmin || isUserManager) &&
+                    pathname !== ROUTES.PROFILE && (
+                      <Button
+                        styleType="danger"
+                        className="mr-auto"
+                        onClick={deleteUserHandler}
+                      >
+                        Delete user
+                      </Button>
+                    )}
 
                   <Button onClick={() => setIsEditing(true)}>
                     Edit Profile

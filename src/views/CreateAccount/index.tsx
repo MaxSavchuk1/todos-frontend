@@ -1,37 +1,30 @@
 import { Formik, Form, FormikHelpers } from "formik";
-import { useSignupMutation } from "@/services/api/modules/users";
-import { SignUpRequest } from "@/helpers/types";
+import { useNavigate } from "react-router-dom";
+import { useCreateAccountMutation } from "@/services/api/modules/users";
+import { CreateAccountRequest } from "@/helpers/types";
 import { Button } from "@/components/ui";
-import useLogin from "@/hooks/useLogin";
-import { Link, Navigate } from "react-router-dom";
 import Input from "@/components/ui/Input";
-import useAuth from "@/hooks/useAuth";
+import { createAccountValidationSchema } from "@/helpers/validationSchemes";
 import { ROUTES } from "@/constants";
-import { signUpValidationSchema } from "@/helpers/validationSchemes";
 
-const initialValues: SignUpRequest = {
+const initialValues: CreateAccountRequest = {
   firstName: "",
   lastName: "",
   email: "",
   password: "",
 };
 
-export default function SignUp() {
-  const [signup] = useSignupMutation();
-  const { loginRequest } = useLogin();
-  const { isAuthenticated } = useAuth();
-
-  if (isAuthenticated) {
-    return <Navigate to={ROUTES.HOME} replace />;
-  }
+export default function CreateAccount() {
+  const [createAccount] = useCreateAccountMutation();
+  const navigate = useNavigate();
 
   const submitHandler = async (
-    values: SignUpRequest,
-    { setSubmitting, setFieldError }: FormikHelpers<SignUpRequest>
+    values: CreateAccountRequest,
+    { setSubmitting, setFieldError }: FormikHelpers<CreateAccountRequest>
   ) => {
     try {
-      await signup(values).unwrap();
-      loginRequest({ email: values.email, password: values.password });
+      await createAccount(values).unwrap();
+      navigate(ROUTES.USERS);
     } catch (error) {
       const messages = (error as any)?.data?.messageByField;
       if (messages) {
@@ -44,14 +37,12 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex flex-col bg-gray-50 p-4">
+      <h2 className="text-2xl text-gray-900">Create user</h2>
       <div className="max-w-md w-full space-y-8">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Create your account
-        </h2>
         <Formik
           initialValues={initialValues}
-          validationSchema={signUpValidationSchema}
+          validationSchema={createAccountValidationSchema}
           onSubmit={submitHandler}
         >
           {({ isSubmitting }) => (
@@ -65,12 +56,8 @@ export default function SignUp() {
 
               <div className="flex items-center justify-between">
                 <Button type="submit" disabled={isSubmitting}>
-                  Sign up
+                  Create new user
                 </Button>
-
-                <Link to="/sign-in" className="router-link">
-                  Sign in
-                </Link>
               </div>
             </Form>
           )}

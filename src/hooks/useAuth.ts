@@ -7,11 +7,12 @@ const useAuth = () => {
   const user = parseToken(accessToken);
 
   const userRoles = user?.roles || [];
-  const isAdmin = userRoles.includes(Role.Admin);
-  const isUser = userRoles.includes(Role.User);
+  const isAdmin = userRoles.includes(Role.ADMIN);
+  const isUser = userRoles.includes(Role.APP_USER);
+  const isUserManager = userRoles.includes(Role.USER_MANAGER);
 
   const check = (roles: string[]) => {
-    if (roles.includes("*")) return true;
+    if (roles.includes("*") || userRoles.includes(Role.ADMIN)) return true;
     for (const role of roles) {
       if (userRoles.includes(role as Role)) return true;
     }
@@ -22,7 +23,9 @@ const useAuth = () => {
     isAuthenticated: !!accessToken,
     isAdmin,
     isUser,
+    isUserManager,
     userRoles,
+
     check,
   };
 };

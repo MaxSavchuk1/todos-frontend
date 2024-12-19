@@ -7,6 +7,7 @@ import type { TokensResponse } from "@/helpers/types";
 import type { AppState } from "@/store";
 import { ROUTES } from "@/constants";
 
+// const baseUrl = "http://192.168.101.65:4000/api";
 const baseUrl = "http://localhost:4000/api";
 
 const baseQuery = fetchBaseQuery({

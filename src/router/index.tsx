@@ -18,7 +18,7 @@ const Home = lazy(() => import("@/views/Home"));
 const Board = lazy(() => import("@/views/Board"));
 const Profile = lazy(() => import("@/views/Profile"));
 const SignIn = lazy(() => import("@/views/SignIn"));
-const SignUp = lazy(() => import("@/views/SignUp"));
+const CreateAccount = lazy(() => import("@/views/CreateAccount"));
 const ErrorPage = lazy(() => import("@/views/ErrorPage"));
 const Users = lazy(() => import("@/views/Users"));
 const User = lazy(() => import("@/views/User"));
@@ -56,6 +56,10 @@ export const router = createBrowserRouter([
         element: <User />,
       },
       {
+        path: ROUTES.CREATE_USER,
+        element: <CreateAccount />,
+      },
+      {
         path: ROUTES.CHANGE_PASSWORD,
         element: <PasswordChange />,
       },
@@ -64,9 +68,5 @@ export const router = createBrowserRouter([
   {
     path: ROUTES.SIGN_IN,
     element: <SignIn />,
-  },
-  {
-    path: ROUTES.SIGN_UP,
-    element: <SignUp />,
   },
 ]);

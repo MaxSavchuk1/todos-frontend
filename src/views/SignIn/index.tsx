@@ -1,4 +1,4 @@
-import { Link, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { Formik, Form, FormikHelpers } from "formik";
 import { LoginRequest } from "@/helpers/types";
 import { Button } from "@/components/ui";
@@ -60,10 +60,6 @@ export default function SignIn() {
                 <Button type="submit" disabled={isSubmitting}>
                   Sign in
                 </Button>
-
-                <Link to="/sign-up" className="router-link">
-                  Create an account
-                </Link>
               </div>
             </Form>
           )}

@@ -1,11 +1,6 @@
-export const STATUSES = ["new", "in process", "testing", "done"] as const;
+import { Role } from "./helpers/types";
 
-export const REQUEST_STATUTES = {
-  IDLE: "idle",
-  PENDING: "pending",
-  RESOLVED: "resolved",
-  REJECTED: "rejected",
-} as const;
+export const STATUSES = ["new", "in process", "testing", "done"] as const;
 
 export const ROUTES = {
   HOME: "/",
@@ -14,11 +9,12 @@ export const ROUTES = {
   SIGN_IN: "/sign-in",
   SIGN_UP: "/sign-up",
   USERS: "/users",
+  CREATE_USER: "/users/create",
   CHANGE_PASSWORD: "/change-password",
 };
 
 export const sidebarLinks = [
   { path: ROUTES.HOME, label: "Home", canAccess: ["*"] },
-  { path: ROUTES.BOARD, label: "Board", canAccess: ["user"] },
-  { path: ROUTES.USERS, label: "Users", canAccess: ["admin"] },
+  { path: ROUTES.BOARD, label: "Board", canAccess: [Role.APP_USER] },
+  { path: ROUTES.USERS, label: "Users", canAccess: [Role.USER_MANAGER] },
 ];
