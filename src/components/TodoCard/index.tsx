@@ -8,9 +8,15 @@ type Props = {
   todo: Todo;
   minified?: boolean;
   handleDragTodo?: (id: string) => void;
+  handleClick?: () => void;
 };
 
-function TodoCard({ todo, minified = false, handleDragTodo }: Props) {
+function TodoCard({
+  todo,
+  minified = false,
+  handleDragTodo,
+  handleClick,
+}: Props) {
   const { setShowModal, pushToIdsStack } = useTodos();
 
   const createdTime = useMemo(
@@ -32,7 +38,7 @@ function TodoCard({ todo, minified = false, handleDragTodo }: Props) {
     <div
       id={todo.status + "_" + todo.id}
       className={clsx(styles.cardContainer, !minified && "flex-col")}
-      onClick={clickHandler}
+      onClick={handleClick || clickHandler}
       draggable={!minified}
       onDragStart={onDragStart}
     >

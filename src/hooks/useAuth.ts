@@ -7,6 +7,8 @@ const useAuth = () => {
   const user = parseToken(accessToken);
 
   const userRoles = user?.roles || [];
+  const userId = user?.sub as number | undefined;
+
   const isAdmin = userRoles.includes(Role.ADMIN);
   const isUser = userRoles.includes(Role.APP_USER);
   const isUserManager = userRoles.includes(Role.USER_MANAGER);
@@ -24,7 +26,9 @@ const useAuth = () => {
     isAdmin,
     isUser,
     isUserManager,
+
     userRoles,
+    userId,
 
     check,
   };

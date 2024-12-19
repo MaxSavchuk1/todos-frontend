@@ -4,11 +4,18 @@ import styles from "./styles.module.css";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/constants";
 import Loader from "../Loader";
+import useAuth from "@/hooks/useAuth";
 
 export default function UsersList() {
   const navigate = useNavigate();
+  const { userId } = useAuth();
   const { data, isLoading } = useGetAllUsersQuery({ limit: 999, offset: 0 });
   const users = data?.results || [];
+
+  const userClickHandler = (selectedUserId: number) => {
+    if (userId === selectedUserId) return navigate(ROUTES.PROFILE);
+    return navigate(`${ROUTES.USERS}/${selectedUserId}`);
+  };
 
   if (isLoading) {
     return <Loader />;
@@ -31,10 +38,7 @@ export default function UsersList() {
             </tr>
           ) : (
             users.map((user) => (
-              <tr
-                key={user.id}
-                onClick={() => navigate(`${ROUTES.USERS}/${user.id}`)}
-              >
+              <tr key={user.id} onClick={() => userClickHandler(user.id)}>
                 <td>{user.firstName}</td>
                 <td>{user.lastName}</td>
                 <td>{DateTime.fromISO(user.createdAt).toFormat("f")}</td>

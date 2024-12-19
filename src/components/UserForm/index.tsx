@@ -4,6 +4,7 @@ import { Button } from "@/components/ui";
 import {
   useDeleteUserMutation,
   useUpdateProfileMutation,
+  useUpdateMyProfileMutation,
 } from "@/services/api/modules/users";
 import { User, UserProfile } from "@/helpers/types";
 import styles from "./styles.module.css";
@@ -25,6 +26,7 @@ const initialFormValues: UserProfile = {
 
 function UserForm({ userData }: Props) {
   const [updateProfile] = useUpdateProfileMutation();
+  const [updateMyProfile] = useUpdateMyProfileMutation();
   const [deleteUser] = useDeleteUserMutation();
   const { isAdmin, isUserManager } = useAuth();
   const { pathname } = useLocation();
@@ -32,6 +34,8 @@ function UserForm({ userData }: Props) {
 
   const [isEditing, setIsEditing] = useState(false);
   const [formValues, setFormValues] = useState(initialFormValues);
+
+  const isProfilePage = pathname === ROUTES.PROFILE;
 
   useEffect(() => {
     if (userData) {
@@ -47,12 +51,19 @@ function UserForm({ userData }: Props) {
     values: UserProfile,
     { setSubmitting }: FormikHelpers<UserProfile>
   ) => {
+    const data = { id: userData!.id, ...values };
+
     try {
-      await updateProfile({ id: userData!.id, ...values }).unwrap();
+      if (isProfilePage) {
+        await updateMyProfile(data).unwrap();
+      } else {
+        await updateProfile(data).unwrap();
+      }
       setIsEditing(false);
     } catch (e) {
       console.log(e);
     }
+
     setSubmitting(false);
   };
 
@@ -66,6 +77,7 @@ function UserForm({ userData }: Props) {
       console.log(e);
     }
   };
+
   return (
     <Formik
       initialValues={formValues}
@@ -88,7 +100,7 @@ function UserForm({ userData }: Props) {
                   placeholder="First Name"
                 />
               ) : (
-                <div className="mt-1 pt-2 pb-4">{userData?.firstName}</div>
+                <div className={styles.infoItem}>{userData?.firstName}</div>
               )}
             </div>
 
@@ -104,7 +116,7 @@ function UserForm({ userData }: Props) {
                   placeholder="Last Name"
                 />
               ) : (
-                <div className="mt-1 pt-2 pb-4">{userData?.lastName}</div>
+                <div className={styles.infoItem}>{userData?.lastName}</div>
               )}
             </div>
 
@@ -121,7 +133,7 @@ function UserForm({ userData }: Props) {
                   disabled
                 />
               ) : (
-                <div className="mt-1 pt-2 pb-4">{userData?.email}</div>
+                <div className={styles.infoItem}>{userData?.email}</div>
               )}
             </div>
 
@@ -144,19 +156,18 @@ function UserForm({ userData }: Props) {
                 <div className="flex w-full">
                   {/* plug. Somehow Formik use any another button as submit button if there is no submit button */}
                   <Button type="submit" disabled className="!hidden">
-                    Save
+                    Plug
                   </Button>
 
-                  {(isAdmin || isUserManager) &&
-                    pathname !== ROUTES.PROFILE && (
-                      <Button
-                        styleType="danger"
-                        className="mr-auto"
-                        onClick={deleteUserHandler}
-                      >
-                        Delete user
-                      </Button>
-                    )}
+                  {(isAdmin || isUserManager) && !isProfilePage && (
+                    <Button
+                      styleType="danger"
+                      className="mr-auto"
+                      onClick={deleteUserHandler}
+                    >
+                      Delete user
+                    </Button>
+                  )}
 
                   <Button onClick={() => setIsEditing(true)}>
                     Edit Profile
