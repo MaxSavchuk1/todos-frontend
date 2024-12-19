@@ -11,18 +11,22 @@ type Props = {
 
 const userRoutes = [ROUTES.BOARD];
 
-const adminRoutes = [ROUTES.USERS];
+const userManagerRoutes = [ROUTES.USERS, ROUTES.CREATE_USER];
 
 const checkPrivateRoutes = (
   children: Props["children"],
-  { isAdmin, isUser }: useAuthReturnType,
+  { isUser, isUserManager, isAdmin }: useAuthReturnType,
   pathname: string
 ) => {
-  if (!isAdmin && adminRoutes.includes(pathname)) {
-    return <Navigate to={ROUTES.HOME} />;
+  if (isAdmin) {
+    return children;
   }
 
   if (!isUser && userRoutes.includes(pathname)) {
+    return <Navigate to={ROUTES.HOME} />;
+  }
+
+  if (!isUserManager && userManagerRoutes.includes(pathname)) {
     return <Navigate to={ROUTES.HOME} />;
   }
 

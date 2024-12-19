@@ -1,0 +1,15 @@
+.container {
+  @apply grid grid-cols-2 gap-4;
+}
+
+.sectionHeader {
+  @apply mb-2 font-semibold underline;
+}
+
+.sectionItem {
+  @apply flex items-center justify-between max-w-40;
+}
+
+.sectionItemIcon {
+  @apply w-6 cursor-pointer;
+}

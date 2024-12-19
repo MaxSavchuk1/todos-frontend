@@ -5,6 +5,7 @@ import {
   useAddRoleMutation,
   useRemoveRoleMutation,
 } from "@/services/api/modules/roles";
+import styles from "./styles.module.css";
 
 function RoleEditor({ user }: { user: User }) {
   const [addRoleRequest] = useAddRoleMutation();
@@ -25,42 +26,36 @@ function RoleEditor({ user }: { user: User }) {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-4">
-      <div>
-        <h3 className="mb-2 font-semibold underline">Available Roles</h3>
+    <div className={styles.container}>
+      <section>
+        <h3 className={styles.sectionHeader}>Available Roles</h3>
         <ul className="space-y-2">
           {availableRoles.map((role) => (
-            <li
-              key={role}
-              className="flex items-center justify-between max-w-24"
-            >
+            <li key={role} className={styles.sectionItem}>
               <span>{role}</span>
               <PlusCircleIcon
-                className="w-6 cursor-pointer"
+                className={styles.sectionItemIcon}
                 onClick={() => updateRole("add", role)}
               />
             </li>
           ))}
         </ul>
-      </div>
+      </section>
 
-      <div>
-        <h3 className="mb-2 font-semibold underline">Assigned Roles</h3>
+      <section>
+        <h3 className={styles.sectionHeader}>Assigned Roles</h3>
         <ul className="space-y-2">
           {user.roles.map((role) => (
-            <li
-              key={role}
-              className="flex items-center justify-between max-w-24"
-            >
+            <li key={role} className={styles.sectionItem}>
               <span>{role}</span>
               <MinusCircleIcon
-                className="w-6 cursor-pointer"
+                className={styles.sectionItemIcon}
                 onClick={() => updateRole("remove", role)}
               />
             </li>
           ))}
         </ul>
-      </div>
+      </section>
     </div>
   );
 }

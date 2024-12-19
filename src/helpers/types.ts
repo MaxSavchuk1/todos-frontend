@@ -24,7 +24,7 @@ export type LoginRequest = {
   password: string;
 };
 
-export type SignUpRequest = LoginRequest & {
+export type CreateAccountRequest = LoginRequest & {
   lastName: string;
   firstName: string;
 };
@@ -35,8 +35,9 @@ export type TokensResponse = {
 };
 
 export enum Role {
-  User = "user",
-  Admin = "admin",
+  APP_USER = "app_user",
+  USER_MANAGER = "user_manager",
+  ADMIN = "admin",
 }
 
 export type UserProfile = {
