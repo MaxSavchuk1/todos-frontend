@@ -1,15 +1,12 @@
 import { memo, useMemo } from "react";
-import {
-  InformationCircleIcon,
-  MinusCircleIcon,
-  PlusCircleIcon,
-} from "@heroicons/react/24/outline";
+import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 import { Role, User } from "@/helpers/types";
 import {
   useAddRoleMutation,
   useRemoveRoleMutation,
 } from "@/services/api/modules/roles";
 import styles from "./styles.module.css";
+import Alert from "../ui/Alert";
 
 function RoleEditor({ user }: { user: User }) {
   const [addRoleRequest] = useAddRoleMutation();
@@ -34,13 +31,10 @@ function RoleEditor({ user }: { user: User }) {
   return (
     <>
       {showAdminAlert && (
-        <div className={styles.adminAlert}>
-          <InformationCircleIcon className="w-5" />
-          <span>
-            Admin role grant access to all app, you don't need to assign other
-            roles
-          </span>
-        </div>
+        <Alert type="info">
+          Admin role grant access to all app, you don't need to assign other
+          roles
+        </Alert>
       )}
 
       <div className={styles.container}>

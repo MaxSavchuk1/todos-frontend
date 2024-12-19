@@ -8,7 +8,6 @@ import {
 } from "@/store/todos.slice";
 import useCustomSelector from "./useCustomSelector";
 import {
-  useGetTodosQuery,
   useCreateTodoMutation,
   useDeleteTodoMutation,
   useLazyGetTodoByIdQuery,
@@ -19,7 +18,6 @@ import {
 const useTodos = () => {
   const dispatch = useAppDispatch();
   const [fetchTodos] = useLazyGetTodosQuery();
-  const { data: todos } = useGetTodosQuery();
   const [createTodo] = useCreateTodoMutation();
   const [updateTodo] = useUpdateTodoMutation();
   const [deleteTodo] = useDeleteTodoMutation();
@@ -48,7 +46,6 @@ const useTodos = () => {
   );
 
   return {
-    todos,
     showModal,
     todosIdsStack,
 

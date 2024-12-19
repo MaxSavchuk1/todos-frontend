@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { pick } from "lodash";
 import notify from "@/services/notify";
@@ -12,13 +12,17 @@ import TodoCard from "../TodoCard";
 import styles from "./styles.module.css";
 import type { FormValues, Todo, TodoStatus } from "@/helpers/types";
 
+type Props = {
+  allowEdit?: boolean;
+};
+
 const initialFormValues: FormValues = {
   title: "",
   body: "",
   status: "new",
 };
 
-export default function TodoDialog() {
+function TodoDialog({ allowEdit = true }: Props) {
   const {
     showModal,
     todosIdsStack,
@@ -175,7 +179,7 @@ export default function TodoDialog() {
         enableReinitialize
       >
         {({ setFieldValue }) => (
-          <Form className="flex flex-col items-start gap-3 mt-6">
+          <Form className={styles.inputs}>
             {isEdit && (
               <>
                 <Field
@@ -198,16 +202,16 @@ export default function TodoDialog() {
             {!isEdit && (
               <>
                 <h3
-                  className="text-xl font-semibold text-gray-900 line-clamp-2"
-                  onDoubleClick={() => setIsEdit(true)}
+                  className={styles.todoTitle}
+                  onDoubleClick={() => allowEdit && setIsEdit(true)}
                 >
                   {currentTodo?.title}
                 </h3>
 
                 <div className="mt-2">
                   <p
-                    className="text-sm text-gray-500 line-clamp-5"
-                    onDoubleClick={() => setIsEdit(true)}
+                    className={styles.todoBody}
+                    onDoubleClick={() => allowEdit && setIsEdit(true)}
                   >
                     {currentTodo?.body}
                   </p>
@@ -220,6 +224,7 @@ export default function TodoDialog() {
                 name="status"
                 optionValues={[...STATUSES]}
                 className="w-40 ml-auto"
+                disabled={!allowEdit}
                 onChange={(e) => {
                   const { value } = e.target;
                   handleUpdateStatus(value as TodoStatus);
@@ -228,17 +233,17 @@ export default function TodoDialog() {
               />
             )}
 
-            <div className="w-full border-t border-black"></div>
+            <div className={styles.divider}></div>
 
             {currentTodo?.children && !isEdit && (
-              <div className="w-full flex flex-col gap-1 max-h-28 overflow-y-scroll">
+              <div className={styles.childrenList}>
                 {(currentTodo.children as Todo[]).map((childTodo) => (
                   <TodoCard key={childTodo.id} todo={childTodo} minified />
                 ))}
               </div>
             )}
 
-            {currentTodo && !isEdit && (
+            {allowEdit && currentTodo && !isEdit && (
               <Button
                 type="button"
                 className="ml-auto"
@@ -248,29 +253,33 @@ export default function TodoDialog() {
               </Button>
             )}
 
-            <div className="mt-5 flex gap-3 w-full justify-between">
-              {currentTodo && (
-                <Button
-                  type="button"
-                  onClick={() => setIsEdit((prev) => !prev)}
-                >
-                  {isEdit ? "Cancel" : "Edit"}
-                </Button>
-              )}
+            {allowEdit && (
+              <div className={styles.buttons}>
+                {currentTodo && (
+                  <Button
+                    type="button"
+                    onClick={() => setIsEdit((prev) => !prev)}
+                  >
+                    {isEdit ? "Cancel" : "Edit"}
+                  </Button>
+                )}
 
-              {isEdit ? (
-                <Button type="submit" styleType="primary">
-                  Save
-                </Button>
-              ) : (
-                <Button styleType="danger" onClick={() => handleDelete()}>
-                  Delete
-                </Button>
-              )}
-            </div>
+                {isEdit ? (
+                  <Button type="submit" styleType="primary">
+                    Save
+                  </Button>
+                ) : (
+                  <Button styleType="danger" onClick={() => handleDelete()}>
+                    Delete
+                  </Button>
+                )}
+              </div>
+            )}
           </Form>
         )}
       </Formik>
     </Dialog>
   );
 }
+
+export default memo(TodoDialog);

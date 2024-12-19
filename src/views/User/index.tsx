@@ -8,6 +8,8 @@ import RoleEditor from "@/components/RoleEditor";
 import styles from "./styles.module.css";
 import useAuth from "@/hooks/useAuth";
 import TodoCard from "@/components/TodoCard";
+import TodoDialog from "@/components/TodoDialog";
+import Alert from "@/components/ui/Alert";
 
 function User() {
   const { id } = useParams();
@@ -41,16 +43,17 @@ function User() {
           <TabPanel>
             <div className={styles.tabContent}>
               {user?.todos?.length ? (
-                <div className="w-full flex flex-col gap-1 max-w-xl">
-                  {(user?.todos || []).map((todo) => (
-                    <TodoCard
-                      key={todo.id}
-                      todo={todo}
-                      minified
-                      handleClick={() => {}}
-                    />
-                  ))}
-                </div>
+                <>
+                  <Alert type="info">You can only view todos</Alert>
+
+                  <div className="w-full flex flex-col gap-1">
+                    {(user?.todos || []).map((todo) => (
+                      <TodoCard key={todo.id} todo={todo} minified />
+                    ))}
+                  </div>
+
+                  <TodoDialog allowEdit={false} />
+                </>
               ) : (
                 <div>No tasks</div>
               )}

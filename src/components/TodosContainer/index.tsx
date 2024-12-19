@@ -5,11 +5,13 @@ import { STATUSES } from "@/constants";
 import TodoCard from "../TodoCard";
 import useTodos from "@/hooks/useTodos";
 import type { TodoStatus, Todo } from "@/helpers/types";
+import { useGetTodosQuery } from "@/services/api/modules/todos";
 
 type GroupedTodos = Record<TodoStatus, Todo[] | undefined>;
 
 export default function TodosContainer() {
-  const { setShowModal, updateTodo, fetchTodos, todos } = useTodos();
+  const { setShowModal, updateTodo, fetchTodos } = useTodos();
+  const { data: todos } = useGetTodosQuery();
 
   const draggedTodoId = useRef<string | null>(null);
 
