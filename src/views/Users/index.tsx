@@ -11,7 +11,7 @@ export default function Users() {
         <h2 className="text-2xl my-5">Users</h2>
 
         <Button
-          className="!bg-sky-200"
+          className="!bg-blue-800 !text-white"
           onClick={() => navigate(ROUTES.CREATE_USER)}
         >
           Add user

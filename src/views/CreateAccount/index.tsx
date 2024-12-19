@@ -37,7 +37,7 @@ export default function CreateAccount() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 p-4">
+    <div className="min-h-screen flex flex-col p-4">
       <h2 className="text-2xl text-gray-900">Create user</h2>
       <div className="max-w-md w-full space-y-8">
         <Formik

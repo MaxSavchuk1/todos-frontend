@@ -1,3 +1,7 @@
 .label {
   @apply block text-xs font-medium text-gray-700;
 }
+
+.infoItem {
+  @apply mt-1 pt-2 pb-4;
+}

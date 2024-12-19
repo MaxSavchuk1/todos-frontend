@@ -21,7 +21,7 @@ export default function CommonLayout() {
         <div className="w-full h-full overflow-y-scroll">
           {showBackButton && (
             <div
-              className="flex gap-1 items-center cursor-pointer mt-3 w-fit"
+              className="flex gap-1 items-center cursor-pointer my-3 w-fit"
               onClick={() => navigate(-1)}
             >
               <ChevronLeftIcon className="w-5" />
