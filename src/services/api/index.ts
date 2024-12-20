@@ -49,7 +49,7 @@ const baseQueryWithRefresh = async (args: any, api: any, extraOptions: any) => {
         } else {
           notify("Session expired", "error");
           api.dispatch(clearTokens());
-          api.dispatch(api.util.resetApiState());
+          api.dispatch(api.util?.resetApiState());
           router.navigate(ROUTES.SIGN_IN);
         }
       }

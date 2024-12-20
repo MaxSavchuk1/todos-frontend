@@ -1,5 +1,5 @@
 .usersTable {
-  @apply min-w-[500px];
+  @apply min-w-[500px] max-w-3xl border;
 }
 
 .usersTable td {

@@ -1,16 +1,31 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { DateTime } from "luxon";
 import { useGetAllUsersQuery } from "@/services/api/modules/users";
-import styles from "./styles.module.css";
-import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/constants";
-import Loader from "../Loader";
 import useAuth from "@/hooks/useAuth";
+import Loader from "../Loader";
+import Pagination from "../Pagination";
+import styles from "./styles.module.css";
 
 export default function UsersList() {
   const navigate = useNavigate();
   const { userId } = useAuth();
-  const { data, isLoading } = useGetAllUsersQuery({ limit: 999, offset: 0 });
+
+  const limit = 10;
+  const [offset, setOffset] = useState(0);
+
+  const { data, isLoading } = useGetAllUsersQuery({
+    limit,
+    offset,
+  });
+
+  const onPageChange = (newOffset: number) => {
+    setOffset(newOffset);
+  };
+
   const users = data?.results || [];
+  const totalUsers = data?.total || 0;
 
   const userClickHandler = (selectedUserId: number) => {
     if (userId === selectedUserId) return navigate(ROUTES.PROFILE);
@@ -22,7 +37,7 @@ export default function UsersList() {
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-6 h-full">
       <table border={1} className={styles.usersTable}>
         <thead>
           <tr>
@@ -47,6 +62,14 @@ export default function UsersList() {
           )}
         </tbody>
       </table>
+
+      <Pagination
+        className="mt-auto mb-8"
+        pageSize={limit}
+        offset={offset}
+        total={totalUsers}
+        onPageChange={onPageChange}
+      />
     </div>
   );
 }

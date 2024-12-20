@@ -7,6 +7,7 @@ import Input from "@/components/ui/Input";
 import useAuth from "@/hooks/useAuth";
 import { ROUTES } from "@/constants";
 import { signInValidationSchema } from "@/helpers/validationSchemes";
+import styles from "./styles.module.css";
 
 const initialValues: LoginRequest = {
   email: "",
@@ -39,11 +40,10 @@ export default function SignIn() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign in to your account
-        </h2>
+    <div className={styles.pageContainer}>
+      <div className={styles.formContainer}>
+        <h2 className={styles.header}>Sign in to your account</h2>
+
         <Formik
           initialValues={initialValues}
           validationSchema={signInValidationSchema}
