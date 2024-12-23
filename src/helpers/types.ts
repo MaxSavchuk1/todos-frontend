@@ -50,6 +50,7 @@ export type User = UserProfile & {
   id: number;
   roles: Role[];
   createdAt: string;
+  todos?: Todo[];
 };
 
 export type FindQuery = {

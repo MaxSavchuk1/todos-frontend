@@ -1,11 +1,7 @@
-import type {
-  FindQuery,
-  CreateAccountRequest,
-  User,
-  Todo,
-} from "@/helpers/types";
+import type { FindQuery, CreateAccountRequest, User } from "@/helpers/types";
 import { api } from "../index";
 import { pick } from "lodash";
+import UserModel from "@/models/UserModel";
 
 const updateQuery = (data: Partial<User>) => ({
   url: `/users/${data.id}`,
@@ -34,20 +30,29 @@ export const usersApi = api.injectEndpoints({
       invalidatesTags: ["CurrentUser"],
     }),
 
-    getAllUsers: builder.query<{ results: User[]; total: number }, FindQuery>({
+    getAllUsers: builder.query<
+      { results: UserModel[]; total: number },
+      FindQuery
+    >({
       query: ({ limit, offset }: FindQuery) =>
         `/users?limit=${limit}&offset=${offset}`,
       providesTags: ["Users"],
+      transformResponse: (response: { results: User[]; total: number }) => ({
+        results: response.results.map((user) => new UserModel(user)),
+        total: response.total,
+      }),
     }),
 
-    getUserById: builder.query<User & { todos: Todo[] }, number>({
+    getUserById: builder.query<UserModel, number>({
       query: (id) => `/users/${id}`,
       providesTags: ["User"],
+      transformResponse: (response: User) => new UserModel(response),
     }),
 
-    getProfile: builder.query<User, void>({
+    getProfile: builder.query<UserModel, void>({
       query: () => "/users/me",
       providesTags: ["CurrentUser"],
+      transformResponse: (response: User) => new UserModel(response),
     }),
 
     deleteUser: builder.mutation<void, number>({

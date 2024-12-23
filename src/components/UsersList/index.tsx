@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DateTime } from "luxon";
 import { useGetAllUsersQuery } from "@/services/api/modules/users";
 import { ROUTES } from "@/constants";
 import useAuth from "@/hooks/useAuth";
@@ -43,7 +42,7 @@ export default function UsersList() {
           <tr>
             <th>First name</th>
             <th>Last Name</th>
-            <th>Created at</th>
+            <th>Joined at</th>
           </tr>
         </thead>
         <tbody>
@@ -56,7 +55,7 @@ export default function UsersList() {
               <tr key={user.id} onClick={() => userClickHandler(user.id)}>
                 <td>{user.firstName}</td>
                 <td>{user.lastName}</td>
-                <td>{DateTime.fromISO(user.createdAt).toFormat("f")}</td>
+                <td>{user.joinedAt}</td>
               </tr>
             ))
           )}

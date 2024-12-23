@@ -32,9 +32,7 @@ function User() {
         <TabPanels>
           <TabPanel>
             <div className={styles.tabContent}>
-              <h1 className={styles.fullName}>
-                {user?.firstName + " " + user?.lastName}
-              </h1>
+              <h1 className={styles.fullName}>{user?.fullName}</h1>
 
               <UserForm userData={user!} />
             </div>

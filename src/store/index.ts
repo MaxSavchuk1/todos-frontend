@@ -11,9 +11,10 @@ export const store = configureStore({
     [api.reducerPath]: api.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ thunk: { extraArgument: "test" } }).concat(
-      api.middleware
-    ),
+    getDefaultMiddleware({
+      thunk: { extraArgument: "test" },
+      serializableCheck: false,
+    }).concat(api.middleware),
   devTools: true,
 });
 
